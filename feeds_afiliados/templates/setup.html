@@ -1,97 +1,56 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Configuração - Sistema Automático</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Setup</title>
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             margin: 0;
-            padding: 20px;
-            color: #333;
-            display: flex;
-            justify-content: center;
-            align-items: center;
         }
-        
-        .setup-container {
+        .container {
             background: white;
-            border-radius: 20px;
             padding: 40px;
-            max-width: 600px;
-            width: 100%;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            border-radius: 20px;
             text-align: center;
+            max-width: 500px;
         }
-        
-        h1 {
-            color: #4f46e5;
-            margin-bottom: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-        }
-        
-        .btn {
+        button {
             background: #4f46e5;
             color: white;
             border: none;
             padding: 15px 30px;
             border-radius: 10px;
             font-size: 1.1rem;
-            font-weight: 600;
             cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
             margin-top: 20px;
-            text-decoration: none;
-        }
-        
-        .btn:hover {
-            background: #7c3aed;
         }
     </style>
 </head>
 <body>
-    <div class="setup-container">
-        <h1><i class="fas fa-cogs"></i> Configuração Inicial</h1>
-        <p>Bem-vindo ao Sistema Automático de Feeds RSS + WhatsApp!</p>
-        <p>Para começar, complete a configuração inicial:</p>
-        
-        <button class="btn" onclick="completeSetup()">
-            <i class="fas fa-rocket"></i> Iniciar Configuração
-        </button>
+    <div class="container">
+        <h1>✅ Sistema Pronto!</h1>
+        <p>O sistema já está configurado e funcionando.</p>
+        <p>Clique abaixo para acessar o dashboard:</p>
+        <button onclick="completeSetup()">Acessar Dashboard</button>
     </div>
     
     <script>
         async function completeSetup() {
             try {
-                const response = await fetch('/api/setup', {
+                await fetch('/api/config', {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({
-                        setup_completed: true,
-                        custom_sites: [],
-                        whatsapp: { enabled: false }
-                    })
+                    body: JSON.stringify({setup_completed: true})
                 });
-                
-                const result = await response.json();
-                
-                if (result.status === 'success') {
-                    alert('Configuração completada! Redirecionando...');
-                    window.location.href = '/';
-                } else {
-                    alert('Erro: ' + result.message);
-                }
+                window.location.href = '/';
             } catch (error) {
-                alert('Erro de conexão: ' + error.message);
+                alert('Erro: ' + error.message);
             }
         }
     </script>

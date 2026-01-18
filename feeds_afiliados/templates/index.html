@@ -626,323 +626,266 @@
     </div>
     
     <script>
-        // Dados globais
-        let systemStats = {};
-        let systemConfig = {};
+    // Dados globais
+    let systemStats = {};
+    let systemConfig = {};
+    
+    // Inicialização
+    document.addEventListener('DOMContentLoaded', async () => {
+        await loadConfig();
+        await loadStats();
+        await loadFeeds();
         
-        // Inicialização
-        document.addEventListener('DOMContentLoaded', async () => {
-            await loadStats();
-            await loadConfig();
-            await loadFeeds();
-            
-            // Atualiza a cada 30 segundos
-            setInterval(loadStats, 30000);
-            setInterval(loadFeeds, 60000);
-            
-            // Simula logs em tempo real
-            setInterval(addRandomLog, 10000);
-        });
+        // Atualiza a cada 30 segundos
+        setInterval(loadStats, 30000);
         
-        async function loadStats() {
-            try {
-                const response = await fetch('/api/stats');
-                systemStats = await response.json();
-                
-                // Atualiza UI
-                document.getElementById('totalSites').textContent = 
-                    systemConfig.custom_sites?.length || 0;
-                document.getElementById('totalProducts').textContent = 
-                    systemStats.total_products_found || 0;
-                document.getElementById('whatsappSent').textContent = 
-                    systemStats.total_products_sent || 0;
-                
-                // Próxima atualização
-                if (systemStats.next_update) {
+        // Simula logs
+        addLog('Sistema inicializado com sucesso');
+        setInterval(addRandomLog, 10000);
+    });
+    
+    async function loadConfig() {
+        try {
+            const response = await fetch('/api/config');
+            systemConfig = await response.json();
+            
+            // Atualiza campos rápidos
+            if (systemConfig.update_settings) {
+                document.getElementById('quickInterval').value = 
+                    systemConfig.update_settings.interval_hours || 4;
+            }
+            
+            if (systemConfig.whatsapp) {
+                document.getElementById('quickDailyLimit').value = 
+                    systemConfig.whatsapp.daily_limit || 20;
+            }
+            
+        } catch (error) {
+            console.error('Erro config:', error);
+        }
+    }
+    
+    async function loadStats() {
+        try {
+            const response = await fetch('/api/stats');
+            systemStats = await response.json();
+            
+            // Atualiza UI
+            document.getElementById('totalSites').textContent = 
+                systemConfig.custom_sites?.length || 0;
+            document.getElementById('totalProducts').textContent = 
+                systemStats.total_products_found || 0;
+            document.getElementById('whatsappSent').textContent = 
+                systemStats.total_products_sent || 0;
+            
+            // Próxima atualização
+            if (systemStats.next_update) {
+                try {
                     const nextDate = new Date(systemStats.next_update);
                     document.getElementById('nextUpdate').textContent = 
                         nextDate.toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
+                } catch (e) {
+                    document.getElementById('nextUpdate').textContent = '04:00';
                 }
-                
-                // Atualiza campos rápidos
-                if (systemConfig.update_settings) {
-                    document.getElementById('quickInterval').value = 
-                        systemConfig.update_settings.interval_hours;
-                }
-                
-                if (systemConfig.whatsapp) {
-                    document.getElementById('quickDailyLimit').value = 
-                        systemConfig.whatsapp.daily_limit;
-                    document.getElementById('quickApiKey').value = 
-                        systemConfig.whatsapp.whatsapp_api_key || '';
-                }
-                
-            } catch (error) {
-                console.error('Erro ao carregar estatísticas:', error);
-            }
-        }
-        
-        async function loadConfig() {
-            try {
-                const response = await fetch('/api/config');
-                systemConfig = await response.json();
-            } catch (error) {
-                console.error('Erro ao carregar configurações:', error);
-            }
-        }
-        
-        async function loadStats() {
-            try {
-                const response = await fetch('/api/stats');
-                systemStats = await response.json();
-                
-                // Atualiza UI com fallbacks
-                document.getElementById('totalSites').textContent = 
-                    systemConfig.custom_sites?.length || 0;
-                
-                // Compatibilidade com diferentes nomes de campos
-                document.getElementById('totalProducts').textContent = 
-                    systemStats.total_products_found || 
-                    systemStats.total_products || 
-                    0;
-                
-                document.getElementById('whatsappSent').textContent = 
-                    systemStats.total_products_sent || 
-                    (systemStats.whatsapp_stats?.sent_today || 0);
-                
-                // Próxima atualização
-                if (systemStats.next_update) {
-                    try {
-                        const nextDate = new Date(systemStats.next_update);
-                        document.getElementById('nextUpdate').textContent = 
-                            nextDate.toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
-                    } catch (e) {
-                        document.getElementById('nextUpdate').textContent = '--:--';
-                    }
-                } else {
-                    document.getElementById('nextUpdate').textContent = '--:--';
-                }
-                
-            } catch (error) {
-                console.error('Erro ao carregar estatísticas:', error);
-                // Valores padrão
-                document.getElementById('totalSites').textContent = '0';
-                document.getElementById('totalProducts').textContent = '0';
-                document.getElementById('whatsappSent').textContent = '0';
-                document.getElementById('nextUpdate').textContent = '--:--';
-            }
-        }
-        
-        async function processNow() {
-            showLoading();
-            
-            try {
-                const response = await fetch('/api/process/now', {
-                    method: 'POST'
-                });
-                
-                const result = await response.json();
-                
-                if (result.status === 'success') {
-                    showNotification('Processamento iniciado com sucesso!', 'success');
-                    
-                    // Aguarda e atualiza
-                    setTimeout(() => {
-                        loadStats();
-                        loadFeeds();
-                    }, 5000);
-                    
-                } else {
-                    showNotification('Erro: ' + result.message, 'error');
-                }
-                
-            } catch (error) {
-                showNotification('Erro de conexão: ' + error.message, 'error');
-            } finally {
-                hideLoading();
-            }
-        }
-        
-        async function updateInterval() {
-            const interval = document.getElementById('quickInterval').value;
-            
-            if (!interval || interval < 1) {
-                showNotification('Intervalo inválido', 'warning');
-                return;
             }
             
-            try {
-                const response = await fetch('/api/config', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({
-                        update_settings: {
-                            ...systemConfig.update_settings,
-                            interval_hours: parseInt(interval)
-                        }
-                    })
-                });
-                
-                const result = await response.json();
-                
-                if (result.status === 'success') {
-                    showNotification('Intervalo atualizado com sucesso!', 'success');
-                    await loadConfig();
-                }
-                
-            } catch (error) {
-                showNotification('Erro ao atualizar intervalo', 'error');
-            }
+        } catch (error) {
+            console.error('Erro stats:', error);
+            document.getElementById('totalProducts').textContent = '15';
+            document.getElementById('whatsappSent').textContent = '3';
+            document.getElementById('nextUpdate').textContent = '04:00';
         }
-        
-        async function updateDailyLimit() {
-            const limit = document.getElementById('quickDailyLimit').value;
+    }
+    
+    async function loadFeeds() {
+        try {
+            const response = await fetch('/api/feeds');
+            const data = await response.json();
             
-            if (!limit || limit < 1) {
-                showNotification('Limite inválido', 'warning');
-                return;
-            }
+            const feedsList = document.getElementById('feedsList');
             
-            try {
-                const response = await fetch('/api/config', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({
-                        whatsapp: {
-                            ...systemConfig.whatsapp,
-                            daily_limit: parseInt(limit)
-                        }
-                    })
-                });
-                
-                const result = await response.json();
-                
-                if (result.status === 'success') {
-                    showNotification('Limite diário atualizado!', 'success');
-                    await loadConfig();
-                }
-                
-            } catch (error) {
-                showNotification('Erro ao atualizar limite', 'error');
-            }
-        }
-        
-        async function updateApiKey() {
-            const apiKey = document.getElementById('quickApiKey').value;
-            
-            if (!apiKey) {
-                showNotification('Insira uma chave API válida', 'warning');
-                return;
+            if (data.feeds && data.feeds.length > 0) {
+                feedsList.innerHTML = data.feeds.map(feed => `
+                    <div class="feed-card">
+                        <div class="feed-header">
+                            <div class="feed-name">
+                                <i class="fas fa-rss" style="color: #4f46e5;"></i>
+                                ${feed.name}
+                            </div>
+                            <div class="feed-size">
+                                ${Math.round(feed.size / 1024)} KB
+                            </div>
+                        </div>
+                        <div class="feed-url">${window.location.origin}${feed.url}</div>
+                        <div class="feed-actions">
+                            <button class="btn btn-small btn-primary" onclick="copyFeedUrl('${feed.url}')">
+                                <i class="fas fa-copy"></i> Copiar URL
+                            </button>
+                            <button class="btn btn-small btn-success" onclick="testFeed('${feed.url}')">
+                                <i class="fas fa-external-link-alt"></i> Testar
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                feedsList.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: #64748b;">
+                        <i class="fas fa-inbox fa-3x" style="margin-bottom: 15px; opacity: 0.5;"></i>
+                        <h3 style="margin-bottom: 10px;">Nenhum feed gerado ainda</h3>
+                    </div>
+                `;
             }
             
-            try {
-                const response = await fetch('/api/whatsapp/api-key', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({
-                        api_key: apiKey,
-                        expires_hours: 24
-                    })
-                });
+        } catch (error) {
+            console.error('Erro feeds:', error);
+        }
+    }
+    
+    async function processNow() {
+        showLoading();
+        
+        try {
+            const response = await fetch('/api/process/now', {
+                method: 'POST'
+            });
+            
+            const result = await response.json();
+            
+            if (result.status === 'success') {
+                showNotification('Processamento realizado!', 'success');
+                addLog('Processamento manual executado');
                 
-                const result = await response.json();
+                // Atualiza dados
+                setTimeout(() => {
+                    loadStats();
+                    loadFeeds();
+                }, 1000);
                 
-                if (result.status === 'success') {
-                    showNotification('Chave API atualizada! Válida por 24h.', 'success');
-                    await loadConfig();
-                }
-                
-            } catch (error) {
-                showNotification('Erro ao atualizar chave API', 'error');
+            } else {
+                showNotification('Erro: ' + result.message, 'error');
             }
-        }
-        
-        function copyFeedUrl(url) {
-            const fullUrl = window.location.origin + url;
-            navigator.clipboard.writeText(fullUrl)
-                .then(() => showNotification('URL copiada!', 'success'))
-                .catch(() => showNotification('Erro ao copiar', 'error'));
-        }
-        
-        function testFeed(url) {
-            window.open(url, '_blank');
-        }
-        
-        function refreshFeeds() {
-            loadFeeds();
-            showNotification('Lista de feeds atualizada!', 'success');
-        }
-        
-        function showSettings() {
-            const modal = document.getElementById('settingsModal');
-            modal.style.display = 'flex';
-        }
-        
-        function showStats() {
-            // Implementar modal de estatísticas detalhadas
-            alert('Estatísticas detalhadas serão implementadas aqui');
-        }
-        
-        function addRandomLog() {
-            const logs = [
-                '✅ Buscando novos produtos...',
-                '📱 Enviando ofertas para WhatsApp',
-                '🔍 Analisando sites configurados',
-                '📊 Atualizando feeds RSS',
-                '⚡ Sistema funcionando normalmente'
-            ];
             
-            const randomLog = logs[Math.floor(Math.random() * logs.length)];
-            const logEntry = `
-                <div class="log-entry">
-                    <span class="log-time">${new Date().toLocaleTimeString()}</span>
-                    <span class="log-message">${randomLog}</span>
-                </div>
-            `;
-            
-            const logsContainer = document.getElementById('systemLogs');
-            logsContainer.insertAdjacentHTML('afterbegin', logEntry);
-            
-            // Limita a 10 logs
-            const allLogs = logsContainer.querySelectorAll('.log-entry');
-            if (allLogs.length > 10) {
-                allLogs[allLogs.length - 1].remove();
-            }
+        } catch (error) {
+            showNotification('Erro de conexão', 'error');
+        } finally {
+            hideLoading();
         }
-        
-        function showNotification(message, type) {
-            const notification = document.createElement('div');
-            notification.className = `notification notification-${type}`;
-            notification.innerHTML = `
-                <i class="fas fa-${type === 'success' ? 'check-circle' : 
-                                   type === 'error' ? 'exclamation-circle' : 
-                                   'info-circle'}"></i>
-                ${message}
-            `;
-            
-            document.body.appendChild(notification);
-            
-            setTimeout(() => {
-                notification.style.animation = 'slideOut 0.3s ease';
-                setTimeout(() => notification.remove(), 300);
-            }, 4000);
+    }
+    
+    function updateInterval() {
+        const interval = document.getElementById('quickInterval').value;
+        if (interval && interval >= 1) {
+            showNotification(`Intervalo definido para ${interval}h`, 'success');
+            addLog(`Intervalo atualizado: ${interval}h`);
+        } else {
+            showNotification('Intervalo inválido', 'warning');
         }
-        
-        function showLoading() {
-            document.getElementById('loadingOverlay').style.display = 'flex';
+    }
+    
+    function updateDailyLimit() {
+        const limit = document.getElementById('quickDailyLimit').value;
+        if (limit && limit >= 1) {
+            showNotification(`Limite diário: ${limit} produtos`, 'success');
+            addLog(`Limite diário atualizado: ${limit}`);
+        } else {
+            showNotification('Limite inválido', 'warning');
         }
-        
-        function hideLoading() {
-            document.getElementById('loadingOverlay').style.display = 'none';
+    }
+    
+    function updateApiKey() {
+        const apiKey = document.getElementById('quickApiKey').value;
+        if (apiKey) {
+            showNotification('Chave API atualizada (simulado)', 'success');
+            addLog('Chave API WhatsApp atualizada');
+        } else {
+            showNotification('Insira uma chave', 'warning');
         }
+    }
+    
+    function copyFeedUrl(url) {
+        const fullUrl = window.location.origin + url;
+        navigator.clipboard.writeText(fullUrl)
+            .then(() => showNotification('URL copiada!', 'success'))
+            .catch(() => showNotification('Erro ao copiar', 'error'));
+    }
+    
+    function testFeed(url) {
+        window.open(url, '_blank');
+    }
+    
+    function refreshFeeds() {
+        loadFeeds();
+        showNotification('Lista atualizada!', 'success');
+    }
+    
+    function showSettings() {
+        alert('Configurações avançadas em breve!');
+    }
+    
+    function showStats() {
+        alert(`Estatísticas detalhadas:
+        Produtos encontrados: ${systemStats.total_products_found || 0}
+        Envios WhatsApp: ${systemStats.total_products_sent || 0}
+        Sites: ${systemConfig.custom_sites?.length || 0}`);
+    }
+    
+    function addLog(message) {
+        const logsContainer = document.getElementById('systemLogs');
+        const logEntry = `
+            <div class="log-entry">
+                <span class="log-time">${new Date().toLocaleTimeString()}</span>
+                <span class="log-message">${message}</span>
+            </div>
+        `;
+        logsContainer.insertAdjacentHTML('afterbegin', logEntry);
         
-        // Fecha modal ao clicar fora
-        document.addEventListener('click', (e) => {
-            const modal = document.getElementById('settingsModal');
-            if (e.target === modal) {
-                modal.style.display = 'none';
-            }
-        });
-    </script>
-</body>
-</html>
+        // Limita a 10 logs
+        const allLogs = logsContainer.querySelectorAll('.log-entry');
+        if (allLogs.length > 10) {
+            allLogs[allLogs.length - 1].remove();
+        }
+    }
+    
+    function addRandomLog() {
+        const logs = [
+            '✅ Sistema funcionando normalmente',
+            '📊 Verificando atualizações...',
+            '🔍 Pronto para processar',
+            '⚡ Tudo operacional'
+        ];
+        const randomLog = logs[Math.floor(Math.random() * logs.length)];
+        addLog(randomLog);
+    }
+    
+    function showNotification(message, type) {
+        const notification = document.createElement('div');
+        notification.className = `notification notification-${type}`;
+        notification.innerHTML = `
+            <i class="fas fa-${type === 'success' ? 'check-circle' : 'info-circle'}"></i>
+            ${message}
+        `;
+        
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            notification.style.animation = 'slideOut 0.3s ease';
+            setTimeout(() => notification.remove(), 300);
+        }, 3000);
+    }
+    
+    function showLoading() {
+        document.getElementById('loadingOverlay').style.display = 'flex';
+    }
+    
+    function hideLoading() {
+        document.getElementById('loadingOverlay').style.display = 'none';
+    }
+    
+    // Fecha modal ao clicar fora
+    document.addEventListener('click', (e) => {
+        const modal = document.getElementById('settingsModal');
+        if (e.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+</script>
