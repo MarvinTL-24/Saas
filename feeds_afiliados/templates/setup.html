@@ -3,443 +3,246 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Configuração Inicial - Feeds RSS</title>
+    <title>Configuração - Sistema Automático</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root {
-            --primary: #667eea;
-            --secondary: #764ba2;
-            --success: #10b981;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-        
-        .setup-container {
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
-            width: 100%;
-            max-width: 800px;
-            box-shadow: 0 30px 80px rgba(0,0,0,0.15);
-        }
-        
-        .setup-header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-        
-        .setup-header h1 {
-            color: #1f2937;
-            margin-bottom: 10px;
-            font-size: 2.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-        }
-        
-        .setup-header p {
-            color: #6b7280;
-            font-size: 1.1rem;
-            line-height: 1.6;
-        }
-        
-        .setup-form {
-            margin-bottom: 30px;
-        }
-        
-        .form-group {
-            margin-bottom: 25px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 10px;
-            font-weight: 600;
-            color: #374151;
-            font-size: 1.1rem;
-        }
-        
-        .form-group small {
-            display: block;
-            margin-top: 5px;
-            color: #6b7280;
-            font-size: 0.9rem;
-        }
-        
-        .site-config {
-            background: #f9fafb;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 20px;
-            border: 1px solid #e5e7eb;
-        }
-        
-        .site-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-            gap: 15px;
-        }
-        
-        .site-icon {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-        }
-        
-        .site-name {
-            font-weight: 600;
-            color: #1f2937;
-            font-size: 1.2rem;
-        }
-        
-        .site-url {
-            color: #6b7280;
-            font-size: 0.9rem;
-            margin-top: 2px;
-        }
-        
-        .input-group {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-        }
-        
-        .input-group input {
-            flex: 1;
-            padding: 14px 18px;
-            border: 2px solid #e5e7eb;
-            border-radius: 10px;
-            font-size: 1rem;
-            transition: all 0.3s;
-        }
-        
-        .input-group input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-        
-        .input-group .hint {
-            color: #9ca3af;
-            font-size: 0.9rem;
-            font-style: italic;
-            min-width: 120px;
-        }
-        
-        .setup-footer {
-            text-align: center;
-            margin-top: 40px;
-            padding-top: 30px;
-            border-top: 2px solid #f3f4f6;
-        }
-        
-        .btn {
-            padding: 16px 40px;
-            border: none;
-            border-radius: 12px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-        }
-        
-        .btn-primary {
-            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
-            color: white;
-        }
-        
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 30px rgba(16, 185, 129, 0.3);
-        }
-        
-        .loading {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.7);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.5rem;
-            flex-direction: column;
-            gap: 20px;
-        }
-        
-        .loading-spinner {
-            width: 50px;
-            height: 50px;
-            border: 5px solid rgba(255,255,255,0.3);
-            border-radius: 50%;
-            border-top-color: white;
-            animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        .notification {
-            position: fixed;
-            top: 30px;
-            right: 30px;
-            padding: 20px 25px;
-            border-radius: 12px;
-            color: white;
-            font-weight: 600;
-            z-index: 1001;
-            animation: slideIn 0.3s ease;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        
-        .notification-success {
-            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
-        }
-        
-        .notification-error {
-            background: #ef4444;
-        }
-        
-        @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-        
-        @keyframes slideOut {
-            from { transform: translateX(0); opacity: 1; }
-            to { transform: translateX(100%); opacity: 0; }
-        }
-        
-        @media (max-width: 768px) {
-            .setup-container {
-                padding: 25px;
-            }
-            
-            .setup-header h1 {
-                font-size: 2rem;
-            }
-            
-            .input-group {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            
-            .btn {
-                width: 100%;
-                justify-content: center;
-            }
-        }
+        /* Estilos completos no próximo código */
     </style>
 </head>
 <body>
     <div class="setup-container">
-        <div class="setup-header">
-            <h1><i class="fas fa-tools"></i> Configuração Inicial</h1>
-            <p>Para começar a usar o sistema, configure seus códigos de afiliado nos sites abaixo. Você pode deixar em branco os sites que não deseja monitorar.</p>
-        </div>
+        <h1><i class="fas fa-cogs"></i> Configuração do Sistema</h1>
         
-        <div class="setup-form">
-            <div class="form-group">
-                <label><i class="fas fa-info-circle"></i> Como funciona:</label>
-                <small>O sistema irá monitorar automaticamente os sites configurados e gerar feeds RSS com SEUS links de afiliado. Configure uma vez e funcione 24h/dia!</small>
+        <div class="setup-stepper">
+            <!-- Passo 1: Sites -->
+            <div class="step active" id="step1">
+                <h2><i class="fas fa-globe"></i> 1. Adicionar Sites</h2>
+                <div class="site-form">
+                    <input type="text" id="siteName" placeholder="Nome do site (ex: Amazon)">
+                    <input type="url" id="siteUrl" placeholder="URL do site">
+                    <select id="affiliateType">
+                        <option value="tag">Tag (tag=)</option>
+                        <option value="ref">Referência (ref=)</option>
+                        <option value="affiliate">Affiliate (affiliate=)</option>
+                        <option value="partner">Partner (partner=)</option>
+                        <option value="custom">Customizado</option>
+                    </select>
+                    <input type="text" id="affiliateCode" placeholder="Seu código de afiliado">
+                    <input type="text" id="siteCategories" placeholder="Categorias (separar por vírgula)">
+                    <button onclick="addSite()"><i class="fas fa-plus"></i> Adicionar Site</button>
+                </div>
+                <div id="sitesList"></div>
             </div>
             
-            <form id="setupForm">
-                {% for site_name, site_url in sites.items() %}
-                <div class="site-config">
-                    <div class="site-header">
-                        <div class="site-icon">
-                            {% if site_name == 'amazon' %}
-                            <i class="fab fa-amazon"></i>
-                            {% elif site_name == 'aliexpress' %}
-                            <i class="fas fa-shopping-cart"></i>
-                            {% elif site_name == 'mercadolivre' %}
-                            <i class="fas fa-money-bill-wave"></i>
-                            {% elif site_name == 'shein' %}
-                            <i class="fas fa-tshirt"></i>
-                            {% elif site_name == 'shopee' %}
-                            <i class="fas fa-shopping-bag"></i>
-                            {% elif site_name == 'centauro' %}
-                            <i class="fas fa-running"></i>
-                            {% else %}
-                            <i class="fas fa-store"></i>
-                            {% endif %}
-                        </div>
-                        <div>
-                            <div class="site-name">{{ site_name.upper() }}</div>
-                            <div class="site-url">{{ site_url }}</div>
-                        </div>
+            <!-- Passo 2: WhatsApp -->
+            <div class="step" id="step2">
+                <h2><i class="fab fa-whatsapp"></i> 2. Configurar WhatsApp</h2>
+                <div class="whatsapp-config">
+                    <label>
+                        <input type="checkbox" id="enableWhatsApp" checked>
+                        Ativar envio automático para WhatsApp
+                    </label>
+                    
+                    <h3>Números para enviar:</h3>
+                    <div id="phoneNumbers"></div>
+                    <button onclick="addPhoneField()"><i class="fas fa-phone"></i> Adicionar Número</button>
+                    
+                    <h3>Chave API WhatsApp Business:</h3>
+                    <input type="password" id="whatsappApiKey" placeholder="Sua chave API (válida por 24h)">
+                    <small>Renove a cada 24 horas para continuar funcionando</small>
+                    
+                    <h3>Horários de envio:</h3>
+                    <div id="sendTimes"></div>
+                    <button onclick="addTimeField()"><i class="fas fa-clock"></i> Adicionar Horário</button>
+                </div>
+            </div>
+            
+            <!-- Passo 3: Configurações -->
+            <div class="step" id="step3">
+                <h2><i class="fas fa-sliders-h"></i> 3. Configurações Avançadas</h2>
+                <div class="advanced-settings">
+                    <div class="setting">
+                        <label>Intervalo entre atualizações (horas):</label>
+                        <input type="number" id="updateInterval" value="4" min="1" max="24">
                     </div>
                     
-                    <div class="input-group">
-                        <input type="text" 
-                               name="{{ site_name }}" 
-                               placeholder="Digite seu código de afiliado..."
-                               autocomplete="off">
-                        <div class="hint">
-                            {% if site_name == 'amazon' %}
-                            Exemplo: sua-tag-20
-                            {% elif site_name == 'mercadolivre' %}
-                            Código afiliado
-                            {% elif site_name == 'aliexpress' %}
-                            aff_fcid
-                            {% else %}
-                            Código de referência
-                            {% endif %}
-                        </div>
+                    <div class="setting">
+                        <label>Produtos por intervalo:</label>
+                        <input type="number" id="productsPerInterval" value="5" min="1" max="20">
+                    </div>
+                    
+                    <div class="setting">
+                        <label>Limite diário de produtos:</label>
+                        <input type="number" id="dailyLimit" value="20" min="1" max="100">
+                    </div>
+                    
+                    <div class="setting">
+                        <label>Template da mensagem:</label>
+                        <textarea id="messageTemplate" rows="6">
+🔥 *OFERTA ESPECIAL* 🔥
+
+*Produto:* {title}
+*Preço:* {price}
+*Categoria:* {category}
+*Site:* {site}
+
+🔗 {link}
+
+📱 Enviado via Sistema Automático</textarea>
+                    </div>
+                    
+                    <div class="setting">
+                        <label>Categorias para filtrar (opcional):</label>
+                        <input type="text" id="categoriesFilter" placeholder="eletrônicos, roupas, casa">
                     </div>
                 </div>
-                {% endfor %}
-                
-                <div class="form-group">
-                    <label><i class="fas fa-clock"></i> Intervalo de Atualização:</label>
-                    <div class="input-group">
-                        <input type="number" 
-                               name="update_interval" 
-                               value="6" 
-                               min="1" 
-                               max="24"
-                               placeholder="Horas entre atualizações">
-                        <div class="hint">O sistema atualizará os feeds automaticamente a cada X horas</div>
-                    </div>
-                </div>
-            </form>
+            </div>
+            
+            <!-- Botões de navegação -->
+            <div class="step-navigation">
+                <button onclick="prevStep()"><i class="fas fa-arrow-left"></i> Anterior</button>
+                <button onclick="nextStep()">Próximo <i class="fas fa-arrow-right"></i></button>
+                <button onclick="completeSetup()" id="finishBtn" style="display:none;">
+                    <i class="fas fa-rocket"></i> Iniciar Sistema
+                </button>
+            </div>
         </div>
-        
-        <div class="setup-footer">
-            <button class="btn btn-primary" onclick="completeSetup()">
-                <i class="fas fa-rocket"></i> CONCLUIR CONFIGURAÇÃO E INICIAR SISTEMA
-            </button>
-            <p style="margin-top: 20px; color: #6b7280; font-size: 0.9rem;">
-                <i class="fas fa-lightbulb"></i> Você poderá alterar essas configurações depois na interface principal
-            </p>
-        </div>
-    </div>
-    
-    <div class="loading" id="loadingOverlay">
-        <div class="loading-spinner"></div>
-        <div>Configurando sistema...</div>
     </div>
     
     <script>
-        function showLoading(message) {
-            const loading = document.getElementById('loadingOverlay');
-            loading.style.display = 'flex';
+        let currentStep = 1;
+        let sites = [];
+        let phoneNumbers = ['+5511999999999'];
+        let sendTimes = ['09:00', '13:00', '17:00', '21:00'];
+        
+        function showStep(step) {
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            document.getElementById(`step${step}`).classList.add('active');
+            
+            document.getElementById('finishBtn').style.display = 
+                step === 3 ? 'inline-block' : 'none';
         }
         
-        function hideLoading() {
-            document.getElementById('loadingOverlay').style.display = 'none';
+        function nextStep() {
+            if (currentStep < 3) {
+                currentStep++;
+                showStep(currentStep);
+            }
         }
         
-        function showNotification(message, type) {
-            const notification = document.createElement('div');
-            notification.className = 'notification notification-' + type;
-            notification.innerHTML = '<i class="fas fa-' + (type === 'success' ? 'check-circle' : 'exclamation-circle') + '"></i>' + message;
+        function prevStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                showStep(currentStep);
+            }
+        }
+        
+        function addSite() {
+            const site = {
+                name: document.getElementById('siteName').value,
+                url: document.getElementById('siteUrl').value,
+                affiliate_type: document.getElementById('affiliateType').value,
+                affiliate_code: document.getElementById('affiliateCode').value,
+                categories: document.getElementById('siteCategories').value.split(',').map(c => c.trim()),
+                enabled: true
+            };
             
-            document.body.appendChild(notification);
-            
-            setTimeout(() => {
-                notification.style.animation = 'slideOut 0.3s ease';
-                setTimeout(() => notification.remove(), 300);
-            }, 4000);
+            if (site.name && site.url) {
+                sites.push(site);
+                updateSitesList();
+                clearSiteForm();
+            }
+        }
+        
+        function updateSitesList() {
+            const list = document.getElementById('sitesList');
+            list.innerHTML = sites.map((site, i) => `
+                <div class="site-item">
+                    <strong>${site.name}</strong>
+                    <small>${site.url}</small>
+                    <button onclick="removeSite(${i})"><i class="fas fa-trash"></i></button>
+                </div>
+            `).join('');
+        }
+        
+        function addPhoneField() {
+            phoneNumbers.push('');
+            updatePhoneFields();
+        }
+        
+        function updatePhoneFields() {
+            const container = document.getElementById('phoneNumbers');
+            container.innerHTML = phoneNumbers.map((num, i) => `
+                <div class="phone-field">
+                    <input type="tel" value="${num}" 
+                           onchange="phoneNumbers[${i}] = this.value"
+                           placeholder="+5511999999999">
+                    ${i > 0 ? `<button onclick="phoneNumbers.splice(${i},1); updatePhoneFields()">X</button>` : ''}
+                </div>
+            `).join('');
+        }
+        
+        function addTimeField() {
+            sendTimes.push('09:00');
+            updateTimeFields();
+        }
+        
+        function updateTimeFields() {
+            const container = document.getElementById('sendTimes');
+            container.innerHTML = sendTimes.map((time, i) => `
+                <div class="time-field">
+                    <input type="time" value="${time}" 
+                           onchange="sendTimes[${i}] = this.value">
+                    ${i > 0 ? `<button onclick="sendTimes.splice(${i},1); updateTimeFields()">X</button>` : ''}
+                </div>
+            `).join('');
         }
         
         async function completeSetup() {
-            showLoading('Salvando configurações...');
+            const config = {
+                custom_sites: sites,
+                whatsapp: {
+                    enabled: document.getElementById('enableWhatsApp').checked,
+                    phone_numbers: phoneNumbers.filter(n => n),
+                    whatsapp_api_key: document.getElementById('whatsappApiKey').value,
+                    send_times: sendTimes,
+                    products_per_interval: parseInt(document.getElementById('productsPerInterval').value),
+                    daily_limit: parseInt(document.getElementById('dailyLimit').value),
+                    message_template: document.getElementById('messageTemplate').value,
+                    categories_filter: document.getElementById('categoriesFilter').value.split(',').map(c => c.trim()),
+                    min_price: 0,
+                    max_price: 10000
+                },
+                update_settings: {
+                    interval_hours: parseInt(document.getElementById('updateInterval').value),
+                    start_immediately: true,
+                    random_delay_minutes: 5,
+                    products_per_update: 20
+                },
+                setup_completed: true
+            };
             
-            try {
-                const form = document.getElementById('setupForm');
-                const inputs = form.querySelectorAll('input');
-                
-                const affiliate_tags = {};
-                let update_interval = 6;
-                
-                inputs.forEach(input => {
-                    if (input.name === 'update_interval') {
-                        update_interval = parseInt(input.value) || 6;
-                    } else {
-                        const value = input.value.trim();
-                        if (value) {
-                            affiliate_tags[input.name] = value;
-                        }
-                    }
-                });
-                
-                // Verifica se pelo menos um site foi configurado
-                if (Object.keys(affiliate_tags).length === 0) {
-                    showNotification('Configure pelo menos um código de afiliado para continuar', 'error');
-                    hideLoading();
-                    return;
-                }
-                
-                const response = await fetch('/api/setup', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({
-                        affiliate_tags: affiliate_tags,
-                        update_interval_hours: update_interval
-                    })
-                });
-                
-                const result = await response.json();
-                
-                if (result.status === 'success') {
-                    showNotification('Sistema configurado com sucesso!', 'success');
-                    
-                    // Redireciona após 2 segundos
-                    setTimeout(() => {
-                        window.location.href = result.redirect || '/';
-                    }, 2000);
-                    
-                } else {
-                    showNotification(result.message || 'Erro ao configurar sistema', 'error');
-                    hideLoading();
-                }
-                
-            } catch (error) {
-                showNotification('Erro de conexão: ' + error.message, 'error');
-                hideLoading();
+            const response = await fetch('/api/setup', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(config)
+            });
+            
+            const result = await response.json();
+            
+            if (result.status === 'success') {
+                alert('Sistema configurado com sucesso!');
+                window.location.href = '/';
+            } else {
+                alert('Erro: ' + result.message);
             }
         }
         
-        // Auto-focus no primeiro input
+        // Inicializa
         document.addEventListener('DOMContentLoaded', () => {
-            const firstInput = document.querySelector('input');
-            if (firstInput) {
-                firstInput.focus();
-            }
+            updatePhoneFields();
+            updateTimeFields();
+            showStep(1);
         });
     </script>
 </body>

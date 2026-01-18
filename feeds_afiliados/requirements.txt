@@ -5,7 +5,7 @@ schedule==1.2.0
 Flask==3.0.0
 lxml==4.9.3
 python-dotenv==1.0.0
-whatsapp-business-api==1.0.0
+whatsapp-business-api==0.1.4
 pywhatkit==5.4
 selenium==4.15.0
 webdriver-manager==4.0.1
