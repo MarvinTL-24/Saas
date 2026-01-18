@@ -4,8 +4,60 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Configuração - Sistema Automático</title>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+
+    <!-- Preload de fontes críticas -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" as="style">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* Critical CSS - Coloque o CSS mais importante aqui */
+    .setup-container { opacity: 0; }
+    .setup-container.ready { 
+        opacity: 1;
+        transition: opacity 0.3s ease;
+    }
+    
+    /* Error toast */
+    .error-toast {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #ef4444;
+        color: white;
+        padding: 15px 20px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        box-shadow: 0 10px 25px rgba(239,68,68,0.3);
+        z-index: 1000;
+        animation: slideInRight 0.3s ease;
+    }
+    
+    @keyframes slideInRight {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+    
+    /* Empty state */
+    .empty-state {
+        text-align: center;
+        padding: 40px 20px;
+        color: #64748b;
+        background: #f8fafc;
+        border-radius: 8px;
+        border: 2px dashed #e2e8f0;
+    }
+
         /* RESET E BASE */
         * {
             margin: 0;
@@ -969,13 +1021,315 @@
         grid-template-columns: 1fr;
     }
 }
+/* JUNTE ESTES ESTILOS COM OS EXISTENTES */
+
+/* Variáveis CSS para cores */
+:root {
+    --primary: #4f46e5;
+    --primary-dark: #4338ca;
+    --success: #10b981;
+    --danger: #ef4444;
+    --warning: #f59e0b;
+    --whatsapp: #25D366;
+    --whatsapp-dark: #128C7E;
+    --gray-50: #f8fafc;
+    --gray-100: #f1f5f9;
+    --gray-200: #e2e8f0;
+    --gray-300: #cbd5e1;
+    --gray-700: #334155;
+    --shadow-sm: 0 1px 2px 0 rgba(0,0,0,0.05);
+    --shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1);
+}
+
+/* Transições mais suaves */
+* {
+    transition: background-color 0.2s, border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+
+/* Layout com Grid mais eficiente */
+.config-section {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 30px;
+    animation: fadeInUp 0.4s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Cards com hover mais leve */
+.api-input-group,
+.phone-section,
+.time-section,
+.stats-card {
+    background: white;
+    border: 1px solid var(--gray-200);
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: var(--shadow-sm);
+}
+
+.api-input-group:hover,
+.phone-section:hover,
+.time-section:hover {
+    box-shadow: var(--shadow);
+    border-color: var(--gray-300);
+}
+
+/* Botões mais modernos */
+.api-test-btn,
+.add-btn,
+.preset-btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.api-test-btn::after,
+.add-btn::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    background: rgba(255,255,255,0.5);
+    opacity: 0;
+    border-radius: 100%;
+    transform: scale(1, 1) translate(-50%);
+    transform-origin: 50% 50%;
+}
+
+.api-test-btn:focus:not(:active)::after,
+.add-btn:focus:not(:active)::after {
+    animation: ripple 1s ease-out;
+}
+
+@keyframes ripple {
+    0% {
+        transform: scale(0, 0);
+        opacity: 0.5;
+    }
+    100% {
+        transform: scale(20, 20);
+        opacity: 0;
+    }
+}
+
+/* Inputs com foco melhorado */
+.api-input-wrapper input:focus,
+.phone-field input:focus,
+.time-field input:focus {
+    border-color: var(--whatsapp);
+    box-shadow: 0 0 0 3px rgba(37, 211, 102, 0.1);
+    transform: translateY(-1px);
+}
+
+/* Preview card mais realista */
+.preview-card {
+    background: linear-gradient(135deg, #dcf8c6 0%, #c5f0b4 100%);
+    border: 1px solid #a7d4a0;
+    box-shadow: 
+        0 4px 12px rgba(0,0,0,0.08),
+        inset 0 1px 0 rgba(255,255,255,0.5);
+}
+
+/* Progress indicator para steps */
+.step-indicator {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 30px;
+    padding: 0 30px;
+}
+
+.step-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--gray-200);
+    transition: all 0.3s;
+}
+
+.step-dot.active {
+    background: var(--primary);
+    transform: scale(1.2);
+}
+
+/* Loading spinner otimizado */
+.spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255,255,255,0.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Tooltip para informações */
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltip-text {
+    visibility: hidden;
+    width: 200px;
+    background-color: var(--gray-700);
+    color: white;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 0.85rem;
+}
+
+.tooltip:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+/* Header com ações */
+.setup-header {
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    color: white;
+    padding: 20px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.setup-header h1 {
+    margin: 0;
+    padding: 0;
+    background: none;
+    font-size: 2.2rem;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.clear-btn {
+    background: rgba(255,255,255,0.2);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s;
+}
+
+.clear-btn:hover {
+    background: rgba(239,68,68,0.2);
+    border-color: #ef4444;
+    transform: translateY(-2px);
+}
+
+.save-status {
+    font-size: 0.85rem;
+    opacity: 0.8;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.save-status i {
+    animation: pulse 2s infinite;
+}
+
+/* Restore notification */
+.restore-notification {
+    background: #3b82f6;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    margin: 0 30px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    animation: slideInDown 0.3s ease;
+}
+
+@keyframes slideInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.restore-notification button {
+    background: rgba(255,255,255,0.2);
+    border: none;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.restore-notification button:hover {
+    background: rgba(255,255,255,0.3);
+}
+
         
     </style>
 </head>
 <body>
     <div class="setup-container">
         <h1><i class="fas fa-cogs"></i> Configuração do Sistema</h1>
-        
+
+        <!-- Adicione este botão após o título principal -->
+        <div class="setup-header">
+            <h1><i class="fas fa-cogs"></i> Configuração do Sistema</h1>
+            <div class="header-actions">
+                <button onclick="clearAllData()" class="clear-btn" title="Limpar tudo">
+                    <i class="fas fa-trash"></i> Limpar
+                </button>
+                <span class="save-status" id="saveStatus">
+                    <i class="fas fa-save"></i> Salvando...
+                </span>
+            </div>
+        </div>
+
+        <div class="step-indicator">
+            <div class="step-dot active" data-step="1"></div>
+            <div class="step-dot" data-step="2"></div>
+            <div class="step-dot" data-step="3"></div>
+        </div>
         <div class="setup-stepper">
             <!-- Passo 1: Sites -->
             <div class="step active" id="step1">
@@ -1221,350 +1575,667 @@
     </div>
     
     <script>
-        let currentStep = 1;
-        let sites = [];
-        let phoneNumbers = ['+5511999999999'];
-        let sendTimes = ['09:00', '13:00', '17:00', '21:00'];
-        
-        function showStep(step) {
-            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
-            document.getElementById(`step${step}`).classList.add('active');
-            
-            document.getElementById('finishBtn').style.display = 
-                step === 3 ? 'inline-block' : 'none';
-        }
-        
-        function nextStep() {
-            if (currentStep < 3) {
-                currentStep++;
-                showStep(currentStep);
-            }
-        }
-        
-        function prevStep() {
-            if (currentStep > 1) {
-                currentStep--;
-                showStep(currentStep);
-            }
-        }
-        
-        function addSite() {
-            const site = {
-                name: document.getElementById('siteName').value,
-                url: document.getElementById('siteUrl').value,
-                affiliate_type: document.getElementById('affiliateType').value,
-                affiliate_code: document.getElementById('affiliateCode').value,
-                categories: document.getElementById('siteCategories').value.split(',').map(c => c.trim()),
-                enabled: true
-            };
-            
-            if (site.name && site.url) {
-                sites.push(site);
-                updateSitesList();
-                clearSiteForm();
-            }
-        }
-        
-        function updateSitesList() {
-            const list = document.getElementById('sitesList');
-            if (sites.length === 0) {
-                list.innerHTML = '<div style="text-align: center; padding: 20px; color: #64748b; background: #f8fafc; border-radius: 8px;">Nenhum site adicionado ainda</div>';
-                return;
-            }
-            
-            list.innerHTML = sites.map((site, i) => `
-                <div class="site-item">
-                    <div>
-                        <strong>${site.name}</strong><br>
-                        <small>${site.url}</small><br>
-                        <small style="color: #10b981; font-size: 0.85rem;">
-                            <i class="fas fa-tag"></i> ${site.affiliate_code || 'Sem código'}
-                        </small>
-                    </div>
-                    <button onclick="removeSite(${i})" title="Remover site">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </div>
-            `).join('');
-        }
-        
-        function removeSite(index) {
-            if (confirm('Tem certeza que deseja remover este site?')) {
-                sites.splice(index, 1);
-                updateSitesList();
-            }
-        }
-        
-        function clearSiteForm() {
-            document.getElementById('siteName').value = '';
-            document.getElementById('siteUrl').value = '';
-            document.getElementById('affiliateCode').value = '';
-            document.getElementById('siteCategories').value = '';
-            document.getElementById('siteName').focus();
-        }
-        
-        function addPhoneField() {
-            phoneNumbers.push('');
-            updatePhoneFields();
-        }
-        
-        function updatePhoneFields() {
-            const container = document.getElementById('phoneNumbers');
-            container.innerHTML = phoneNumbers.map((num, i) => `
-                <div class="phone-field">
-                    <input type="tel" value="${num}" 
-                           onchange="phoneNumbers[${i}] = this.value"
-                           placeholder="+5511999999999">
-                    ${i > 0 ? `<button onclick="phoneNumbers.splice(${i},1); updatePhoneFields()">X</button>` : ''}
-                </div>
-            `).join('');
-        }
-        
-        function addTimeField() {
-            sendTimes.push('09:00');
-            updateTimeFields();
-        }
-        
-        function updateTimeFields() {
-            const container = document.getElementById('sendTimes');
-            container.innerHTML = sendTimes.map((time, i) => `
-                <div class="time-field">
-                    <input type="time" value="${time}" 
-                           onchange="sendTimes[${i}] = this.value">
-                    ${i > 0 ? `<button onclick="sendTimes.splice(${i},1); updateTimeFields()">X</button>` : ''}
-                </div>
-            `).join('');
-        }
-        
-        async function completeSetup() {
-            // Validações
-            if (sites.length === 0) {
-                alert('Adicione pelo menos um site!');
-                showStep(1);
-                return;
-            }
-            
-            if (!document.getElementById('whatsappApiKey').value) {
-                alert('Insira a chave API do WhatsApp Business!');
-                showStep(2);
-                return;
-            }
-            
-            const config = {
-                custom_sites: sites,
-                whatsapp: {
-                    enabled: document.getElementById('enableWhatsApp').checked,
-                    phone_numbers: phoneNumbers.filter(n => n && n.trim() !== ''),
-                    whatsapp_api_key: document.getElementById('whatsappApiKey').value,
-                    send_times: sendTimes,
-                    products_per_interval: parseInt(document.getElementById('productsPerInterval').value),
-                    daily_limit: parseInt(document.getElementById('dailyLimit').value),
-                    message_template: document.getElementById('messageTemplate').value,
-                    categories_filter: document.getElementById('categoriesFilter').value.split(',').map(c => c.trim()).filter(c => c),
-                    min_price: 0,
-                    max_price: 10000
-                },
-                update_settings: {
-                    interval_hours: parseInt(document.getElementById('updateInterval').value),
-                    start_immediately: true,
-                    random_delay_minutes: 5,
-                    products_per_update: 20
-                },
-                setup_completed: true
-            };
-            
-            // Mostra loading
-            const finishBtn = document.getElementById('finishBtn');
-            const originalText = finishBtn.innerHTML;
-            finishBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Configurando...';
-            finishBtn.disabled = true;
-            
-            try {
-                const response = await fetch('/api/setup', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(config)
-                });
-                
-                const result = await response.json();
-                
-                if (result.status === 'success') {
-                    finishBtn.innerHTML = '<i class="fas fa-check"></i> Configurado!';
-                    finishBtn.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
-                    
-                    setTimeout(() => {
-                        window.location.href = '/';
-                    }, 1500);
-                } else {
-                    alert('Erro: ' + (result.message || 'Erro desconhecido'));
-                    finishBtn.innerHTML = originalText;
-                    finishBtn.disabled = false;
-                }
-            } catch (error) {
-                alert('Erro de conexão: ' + error.message);
-                finishBtn.innerHTML = originalText;
-                finishBtn.disabled = false;
-            }
-        }
-        
-        // WhatsApp Config Functions
-        function toggleApiVisibility() {
-            const input = document.getElementById('whatsappApiKey');
-            const eyeIcon = document.getElementById('apiEyeIcon');
-            
-            if (input.type === 'password') {
-                input.type = 'text';
-                eyeIcon.className = 'fas fa-eye-slash';
-            } else {
-                input.type = 'password';
-                eyeIcon.className = 'fas fa-eye';
-            }
-        }
+        // Cache de elementos DOM
+const domCache = {};
 
-        function showApiInstructions() {
-            const instructions = document.getElementById('apiInstructions');
-            instructions.style.display = 'block';
-        }
+function getElement(id) {
+    if (!domCache[id]) {
+        domCache[id] = document.getElementById(id);
+    }
+    return domCache[id];
+}
 
-        function hideApiInstructions() {
-            const instructions = document.getElementById('apiInstructions');
-            // Pequeno delay para permitir clicar nos links
+// Configuração inicial
+let currentStep = 1;
+let sites = [];
+let phoneNumbers = ['+5511999999999'];
+let sendTimes = ['09:00', '13:00', '17:00', '21:00'];
+let isRestored = false;
+
+// Storage keys
+const STORAGE_KEYS = {
+    SITES: 'affiliate_system_sites',
+    WHATSAPP: 'affiliate_system_whatsapp',
+    SETTINGS: 'affiliate_system_settings',
+    STEP: 'affiliate_system_current_step'
+};
+
+// ========== FUNÇÕES DE STORAGE ==========
+function saveToStorage() {
+    try {
+        // Salvar sites
+        localStorage.setItem(STORAGE_KEYS.SITES, JSON.stringify(sites));
+        
+        // Salvar configurações do WhatsApp
+        const whatsappData = {
+            enabled: getElement('enableWhatsApp')?.checked || false,
+            phoneNumbers: phoneNumbers,
+            apiKey: getElement('whatsappApiKey')?.value || '',
+            sendTimes: sendTimes
+        };
+        localStorage.setItem(STORAGE_KEYS.WHATSAPP, JSON.stringify(whatsappData));
+        
+        // Salvar configurações avançadas
+        const settingsData = {
+            updateInterval: getElement('updateInterval')?.value || '4',
+            productsPerInterval: getElement('productsPerInterval')?.value || '5',
+            dailyLimit: getElement('dailyLimit')?.value || '20',
+            messageTemplate: getElement('messageTemplate')?.value || '',
+            categoriesFilter: getElement('categoriesFilter')?.value || ''
+        };
+        localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(settingsData));
+        
+        // Salvar passo atual
+        localStorage.setItem(STORAGE_KEYS.STEP, currentStep.toString());
+        
+        // Mostrar feedback visual
+        showSaveStatus('salvo');
+        
+        console.log('✅ Dados salvos com sucesso');
+    } catch (error) {
+        console.error('❌ Erro ao salvar dados:', error);
+    }
+}
+
+function loadFromStorage() {
+    try {
+        // Carregar sites
+        const savedSites = localStorage.getItem(STORAGE_KEYS.SITES);
+        if (savedSites) {
+            sites = JSON.parse(savedSites);
+            isRestored = true;
+        }
+        
+        // Carregar WhatsApp
+        const savedWhatsApp = localStorage.getItem(STORAGE_KEYS.WHATSAPP);
+        if (savedWhatsApp) {
+            const whatsappData = JSON.parse(savedWhatsApp);
+            
+            if (getElement('enableWhatsApp')) {
+                getElement('enableWhatsApp').checked = whatsappData.enabled;
+            }
+            
+            phoneNumbers = whatsappData.phoneNumbers || ['+5511999999999'];
+            
+            if (getElement('whatsappApiKey') && whatsappData.apiKey) {
+                getElement('whatsappApiKey').value = whatsappData.apiKey;
+            }
+            
+            sendTimes = whatsappData.sendTimes || ['09:00', '13:00', '17:00', '21:00'];
+        }
+        
+        // Carregar configurações
+        const savedSettings = localStorage.getItem(STORAGE_KEYS.SETTINGS);
+        if (savedSettings) {
+            const settingsData = JSON.parse(savedSettings);
+            
+            if (getElement('updateInterval')) {
+                getElement('updateInterval').value = settingsData.updateInterval;
+            }
+            if (getElement('productsPerInterval')) {
+                getElement('productsPerInterval').value = settingsData.productsPerInterval;
+            }
+            if (getElement('dailyLimit')) {
+                getElement('dailyLimit').value = settingsData.dailyLimit;
+            }
+            if (getElement('messageTemplate')) {
+                getElement('messageTemplate').value = settingsData.messageTemplate;
+            }
+            if (getElement('categoriesFilter')) {
+                getElement('categoriesFilter').value = settingsData.categoriesFilter;
+            }
+        }
+        
+        // Carregar passo
+        const savedStep = localStorage.getItem(STORAGE_KEYS.STEP);
+        if (savedStep) {
+            currentStep = parseInt(savedStep);
+        }
+        
+        return isRestored;
+    } catch (error) {
+        console.error('❌ Erro ao carregar dados:', error);
+        return false;
+    }
+}
+
+function clearStorage() {
+    Object.values(STORAGE_KEYS).forEach(key => {
+        localStorage.removeItem(key);
+    });
+    showSaveStatus('limpo');
+}
+
+function showSaveStatus(status) {
+    const saveStatus = getElement('saveStatus');
+    if (!saveStatus) return;
+    
+    const messages = {
+        'salvo': '<i class="fas fa-check"></i> Salvo',
+        'salvando': '<i class="fas fa-sync fa-spin"></i> Salvando...',
+        'limpo': '<i class="fas fa-trash"></i> Limpo'
+    };
+    
+    saveStatus.innerHTML = messages[status] || messages.salvando;
+    
+    if (status === 'salvo') {
+        saveStatus.style.color = '#10b981';
+        setTimeout(() => {
+            saveStatus.innerHTML = '<i class="fas fa-save"></i> Auto-save ativo';
+            saveStatus.style.color = '';
+        }, 2000);
+    }
+}
+
+// ========== FUNÇÕES PRINCIPAIS ==========
+function showStep(step) {
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.step-dot').forEach((dot, index) => {
+        if (index + 1 === step) {
+            dot.classList.add('active');
+        } else {
+            dot.classList.remove('active');
+        }
+    });
+    
+    const stepElement = getElement(`step${step}`);
+    if (stepElement) {
+        stepElement.classList.add('active');
+    }
+    
+    getElement('finishBtn').style.display = step === 3 ? 'inline-block' : 'none';
+    currentStep = step;
+    
+    // Salvar passo atual
+    saveToStorage();
+}
+
+function nextStep() {
+    if (currentStep < 3) {
+        currentStep++;
+        showStep(currentStep);
+    }
+}
+
+function prevStep() {
+    if (currentStep > 1) {
+        currentStep--;
+        showStep(currentStep);
+    }
+}
+
+function addSite() {
+    const name = getElement('siteName').value.trim();
+    const url = getElement('siteUrl').value.trim();
+    const affiliateType = getElement('affiliateType').value;
+    const affiliateCode = getElement('affiliateCode').value.trim();
+    const categories = getElement('siteCategories').value.split(',').map(c => c.trim());
+    
+    if (name && url) {
+        const site = {
+            name: name,
+            url: url,
+            affiliate_type: affiliateType,
+            affiliate_code: affiliateCode,
+            categories: categories.filter(c => c),
+            enabled: true
+        };
+        
+        sites.push(site);
+        updateSitesList();
+        clearSiteForm();
+        
+        // Salvar automaticamente
+        saveToStorage();
+    } else {
+        showError('Preencha pelo menos o nome e URL do site!');
+    }
+}
+
+function updateSitesList() {
+    const list = getElement('sitesList');
+    if (!list) return;
+    
+    if (sites.length === 0) {
+        list.innerHTML = '<div class="empty-state">Nenhum site adicionado ainda</div>';
+        return;
+    }
+    
+    list.innerHTML = sites.map((site, i) => `
+        <div class="site-item" data-index="${i}">
+            <div>
+                <strong>${escapeHtml(site.name)}</strong><br>
+                <small>${escapeHtml(site.url)}</small><br>
+                <small class="affiliate-code">
+                    <i class="fas fa-tag"></i> ${escapeHtml(site.affiliate_code || 'Sem código')}
+                </small>
+            </div>
+            <button onclick="removeSite(${i})" title="Remover site" class="remove-btn">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    `).join('');
+}
+
+function removeSite(index) {
+    if (confirm('Tem certeza que deseja remover este site?')) {
+        sites.splice(index, 1);
+        updateSitesList();
+        saveToStorage();
+    }
+}
+
+function clearSiteForm() {
+    getElement('siteName').value = '';
+    getElement('siteUrl').value = '';
+    getElement('affiliateCode').value = '';
+    getElement('siteCategories').value = '';
+    getElement('siteName').focus();
+}
+
+// ========== WHATSAPP FUNCTIONS ==========
+function toggleApiVisibility() {
+    const input = getElement('whatsappApiKey');
+    const eyeIcon = getElement('apiEyeIcon');
+    
+    if (input.type === 'password') {
+        input.type = 'text';
+        eyeIcon.className = 'fas fa-eye-slash';
+    } else {
+        input.type = 'password';
+        eyeIcon.className = 'fas fa-eye';
+    }
+}
+
+function testWhatsAppAPI() {
+    const apiKey = getElement('whatsappApiKey').value;
+    
+    if (!apiKey) {
+        showError('Por favor, insira a chave API primeiro');
+        return;
+    }
+    
+    const testBtn = document.querySelector('.api-test-btn');
+    const originalText = testBtn.innerHTML;
+    
+    testBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Testando...';
+    testBtn.disabled = true;
+    
+    // Simulação de teste
+    setTimeout(() => {
+        testBtn.innerHTML = '<i class="fas fa-check"></i> API Válida!';
+        testBtn.style.background = '#10b981';
+        
+        setTimeout(() => {
+            testBtn.innerHTML = originalText;
+            testBtn.style.background = '';
+            testBtn.disabled = false;
+        }, 2000);
+    }, 1500);
+}
+
+function updateStats() {
+    const phoneCount = getElement('phoneCount');
+    const timeCount = getElement('timeCount');
+    const statIntervals = getElement('statIntervals');
+    
+    if (phoneCount) {
+        phoneCount.textContent = phoneNumbers.filter(n => n && n.trim()).length + ' número(s)';
+    }
+    
+    if (timeCount) {
+        timeCount.textContent = sendTimes.length + ' horário(s)';
+    }
+    
+    if (statIntervals) {
+        statIntervals.textContent = sendTimes.length;
+    }
+}
+
+function addPhoneField() {
+    phoneNumbers.push('');
+    updatePhoneFields();
+}
+
+function updatePhoneFields() {
+    const container = getElement('phoneNumbers');
+    if (!container) return;
+    
+    container.innerHTML = phoneNumbers.map((num, i) => `
+        <div class="phone-field">
+            <input type="tel" 
+                   value="${num}" 
+                   placeholder="+5511999999999"
+                   oninput="updatePhoneNumber(${i}, this.value)">
+            ${i > 0 ? `
+                <button onclick="removePhoneNumber(${i})" title="Remover número">
+                    <i class="fas fa-times"></i>
+                </button>
+            ` : ''}
+        </div>
+    `).join('');
+    
+    updateStats();
+}
+
+function updatePhoneNumber(index, value) {
+    phoneNumbers[index] = value;
+    saveToStorage();
+}
+
+function removePhoneNumber(index) {
+    phoneNumbers.splice(index, 1);
+    updatePhoneFields();
+    saveToStorage();
+}
+
+function addTimeField() {
+    sendTimes.push('09:00');
+    updateTimeFields();
+}
+
+function updateTimeFields() {
+    const container = getElement('sendTimes');
+    if (!container) return;
+    
+    container.innerHTML = sendTimes.map((time, i) => `
+        <div class="time-field">
+            <input type="time" 
+                   value="${time}" 
+                   onchange="updateSendTime(${i}, this.value)">
+            ${i > 0 ? `
+                <button onclick="removeSendTime(${i})" title="Remover horário">
+                    <i class="fas fa-times"></i>
+                </button>
+            ` : ''}
+        </div>
+    `).join('');
+    
+    updateStats();
+}
+
+function updateSendTime(index, value) {
+    sendTimes[index] = value;
+    saveToStorage();
+}
+
+function removeSendTime(index) {
+    sendTimes.splice(index, 1);
+    updateTimeFields();
+    saveToStorage();
+}
+
+function setTimePreset(type) {
+    const presets = {
+        'morning': ['09:00', '12:00'],
+        'afternoon': ['14:00', '17:00'],
+        'full': ['09:00', '12:00', '15:00', '18:00', '21:00']
+    };
+    
+    sendTimes = [...presets[type]];
+    updateTimeFields();
+    saveToStorage();
+}
+
+// ========== COMPLETE SETUP ==========
+async function completeSetup() {
+    if (!validateForm()) return;
+    
+    const config = buildConfig();
+    const finishBtn = getElement('finishBtn');
+    const originalHTML = finishBtn.innerHTML;
+    const originalBg = finishBtn.style.background;
+    
+    finishBtn.innerHTML = '<span class="spinner"></span> Configurando...';
+    finishBtn.disabled = true;
+    
+    try {
+        const response = await fetch('/api/setup', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(config)
+        });
+        
+        const result = await response.json();
+        
+        if (result.status === 'success') {
+            finishBtn.innerHTML = '<i class="fas fa-check"></i> Configurado!';
+            finishBtn.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+            
+            // Limpar storage após sucesso
             setTimeout(() => {
-                instructions.style.display = 'none';
-            }, 200);
-        }
-
-        function testWhatsAppAPI() {
-            const apiKey = document.getElementById('whatsappApiKey').value;
-            
-            if (!apiKey) {
-                alert('Por favor, insira a chave API primeiro');
-                return;
-            }
-            
-            const testBtn = document.querySelector('.api-test-btn');
-            const originalText = testBtn.innerHTML;
-            
-            testBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Testando...';
-            testBtn.disabled = true;
-            
-            // Simulação de teste
-            setTimeout(() => {
-                testBtn.innerHTML = '<i class="fas fa-check"></i> API Válida!';
-                testBtn.style.background = '#10b981';
-                
-                setTimeout(() => {
-                    testBtn.innerHTML = originalText;
-                    testBtn.style.background = '';
-                    testBtn.disabled = false;
-                }, 2000);
+                clearStorage();
+                window.location.href = '/';
             }, 1500);
+        } else {
+            showError(result.message || 'Erro desconhecido');
+            finishBtn.innerHTML = originalHTML;
+            finishBtn.disabled = false;
         }
+    } catch (error) {
+        showError('Erro de conexão: ' + error.message);
+        finishBtn.innerHTML = originalHTML;
+        finishBtn.disabled = false;
+        finishBtn.style.background = originalBg;
+    }
+}
 
-        function setTimePreset(type) {
-            const presets = {
-                'morning': ['09:00', '12:00'],
-                'afternoon': ['14:00', '17:00'],
-                'full': ['09:00', '12:00', '15:00', '18:00', '21:00']
-            };
-            
-            sendTimes = [...presets[type]];
-            updateTimeFields();
-            updateStats();
+function validateForm() {
+    if (sites.length === 0) {
+        showError('Adicione pelo menos um site!');
+        showStep(1);
+        return false;
+    }
+    
+    if (!getElement('whatsappApiKey').value) {
+        showError('Insira a chave API do WhatsApp Business!');
+        showStep(2);
+        return false;
+    }
+    
+    return true;
+}
+
+function buildConfig() {
+    return {
+        custom_sites: sites,
+        whatsapp: {
+            enabled: getElement('enableWhatsApp').checked,
+            phone_numbers: phoneNumbers.filter(n => n && n.trim() !== ''),
+            whatsapp_api_key: getElement('whatsappApiKey').value,
+            send_times: sendTimes,
+            products_per_interval: parseInt(getElement('productsPerInterval').value) || 5,
+            daily_limit: parseInt(getElement('dailyLimit').value) || 20,
+            message_template: getElement('messageTemplate').value,
+            categories_filter: (getElement('categoriesFilter').value || '')
+                .split(',')
+                .map(c => c.trim())
+                .filter(c => c),
+            min_price: 0,
+            max_price: 10000
+        },
+        update_settings: {
+            interval_hours: parseInt(getElement('updateInterval').value) || 4,
+            start_immediately: true,
+            random_delay_minutes: 5,
+            products_per_update: 20
+        },
+        setup_completed: true
+    };
+}
+
+// ========== UTILITIES ==========
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+function showError(message) {
+    // Remover notificações anteriores
+    document.querySelectorAll('.error-toast').forEach(el => el.remove());
+    
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'error-toast';
+    errorDiv.innerHTML = `
+        <i class="fas fa-exclamation-circle"></i>
+        <span>${escapeHtml(message)}</span>
+        <button onclick="this.parentElement.remove()">
+            <i class="fas fa-times"></i>
+        </button>
+    `;
+    
+    document.body.appendChild(errorDiv);
+    
+    setTimeout(() => {
+        if (errorDiv.parentNode) {
+            errorDiv.remove();
         }
+    }, 5000);
+}
 
-        function updateStats() {
-            document.getElementById('phoneCount').textContent = 
-                phoneNumbers.filter(n => n.trim()).length + ' número(s)';
-            
-            document.getElementById('timeCount').textContent = 
-                sendTimes.length + ' horário(s)';
-            
-            document.getElementById('statIntervals').textContent = sendTimes.length;
-        }
-
-        // Atualizar as funções existentes
-        function addPhoneField() {
-            phoneNumbers.push('');
-            updatePhoneFields();
-            updateStats();
-        }
-
-        function updatePhoneFields() {
-            const container = document.getElementById('phoneNumbers');
-            container.innerHTML = phoneNumbers.map((num, i) => `
-                <div class="phone-field">
-                    <input type="tel" 
-                        value="${num}" 
-                        placeholder="+5511999999999"
-                        oninput="phoneNumbers[${i}] = this.value; updateStats()">
-                    ${i > 0 ? `
-                        <button onclick="phoneNumbers.splice(${i},1); updatePhoneFields(); updateStats()" 
-                                title="Remover número">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    ` : ''}
-                </div>
-            `).join('');
-        }
-
-        function addTimeField() {
-            sendTimes.push('09:00');
-            updateTimeFields();
-            updateStats();
-        }
-
-        function updateTimeFields() {
-            const container = document.getElementById('sendTimes');
-            container.innerHTML = sendTimes.map((time, i) => `
-                <div class="time-field">
-                    <input type="time" 
-                        value="${time}" 
-                        onchange="sendTimes[${i}] = this.value; updateStats()">
-                    ${i > 0 ? `
-                        <button onclick="sendTimes.splice(${i},1); updateTimeFields(); updateStats()" 
-                                title="Remover horário">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    ` : ''}
-                </div>
-            `).join('');
-        }
-
-        // Atualizar o DOMContentLoaded
-        document.addEventListener('DOMContentLoaded', () => {
-            updatePhoneFields();
-            updateTimeFields();
-            updateSitesList();
-            updateStats();
-            showStep(1);
-            
-            // Toggle WhatsApp config visibility
-            const enableCheckbox = document.getElementById('enableWhatsApp');
-            const configSection = document.getElementById('whatsappConfigSection');
-            
-            function toggleConfigVisibility() {
-                if (enableCheckbox.checked) {
-                    configSection.style.display = 'grid';
-                } else {
-                    configSection.style.display = 'none';
-                }
-            }
-            
-            enableCheckbox.addEventListener('change', toggleConfigVisibility);
-            toggleConfigVisibility(); // Initial call
-        });
+function clearAllData() {
+    if (confirm('Tem certeza que deseja limpar todos os dados? Isso não pode ser desfeito.')) {
+        // Resetar arrays
+        sites = [];
+        phoneNumbers = ['+5511999999999'];
+        sendTimes = ['09:00', '13:00', '17:00', '21:00'];
+        currentStep = 1;
         
-        // Inicializa
-        document.addEventListener('DOMContentLoaded', () => {
-            updatePhoneFields();
-            updateTimeFields();
-            updateSitesList();
-            showStep(1);
-            
-            // Foco no primeiro campo
-            document.getElementById('siteName').focus();
+        // Resetar formulários
+        clearSiteForm();
+        if (getElement('whatsappApiKey')) getElement('whatsappApiKey').value = '';
+        if (getElement('enableWhatsApp')) getElement('enableWhatsApp').checked = true;
+        if (getElement('updateInterval')) getElement('updateInterval').value = '4';
+        if (getElement('productsPerInterval')) getElement('productsPerInterval').value = '5';
+        if (getElement('dailyLimit')) getElement('dailyLimit').value = '20';
+        if (getElement('messageTemplate')) getElement('messageTemplate').value = `🔥 *OFERTA ESPECIAL* 🔥\n\n*Produto:* {title}\n*Preço:* {price}\n*Categoria:* {category}\n*Site:* {site}\n\n🔗 {link}\n\n📱 Enviado via Sistema Automático`;
+        if (getElement('categoriesFilter')) getElement('categoriesFilter').value = '';
+        
+        // Atualizar UI
+        updateSitesList();
+        updatePhoneFields();
+        updateTimeFields();
+        showStep(1);
+        
+        // Limpar storage
+        clearStorage();
+        
+        showSaveStatus('limpo');
+        showError('Todos os dados foram limpos!');
+    }
+}
+
+// ========== EVENT LISTENERS & AUTO-SAVE ==========
+function setupEventListeners() {
+    // Auto-save para campos de texto
+    const autoSaveFields = [
+        'siteName', 'siteUrl', 'affiliateCode', 'siteCategories',
+        'whatsappApiKey', 'updateInterval', 'productsPerInterval',
+        'dailyLimit', 'messageTemplate', 'categoriesFilter'
+    ];
+    
+    autoSaveFields.forEach(fieldId => {
+        const field = getElement(fieldId);
+        if (field) {
+            field.addEventListener('input', debounce(saveToStorage, 1000));
+            field.addEventListener('change', saveToStorage);
+        }
+    });
+    
+    // Auto-save para selects
+    const selectFields = ['affiliateType', 'enableWhatsApp'];
+    selectFields.forEach(fieldId => {
+        const field = getElement(fieldId);
+        if (field) {
+            field.addEventListener('change', saveToStorage);
+        }
+    });
+    
+    // Toggle WhatsApp config
+    const enableCheckbox = getElement('enableWhatsApp');
+    const configSection = getElement('whatsappConfigSection');
+    
+    if (enableCheckbox && configSection) {
+        enableCheckbox.addEventListener('change', () => {
+            configSection.style.display = enableCheckbox.checked ? 'grid' : 'none';
+            saveToStorage();
         });
+    }
+}
+
+// ========== INICIALIZAÇÃO ==========
+document.addEventListener('DOMContentLoaded', () => {
+    // Marcar container como pronto
+    document.querySelector('.setup-container').classList.add('ready');
+    
+    // Carregar dados salvos
+    const hasRestoredData = loadFromStorage();
+    
+    // Atualizar UI com dados carregados
+    updateSitesList();
+    updatePhoneFields();
+    updateTimeFields();
+    updateStats();
+    showStep(currentStep);
+    
+    // Configurar event listeners
+    setupEventListeners();
+    
+    // Configurar toggle do WhatsApp
+    const enableCheckbox = getElement('enableWhatsApp');
+    const configSection = getElement('whatsappConfigSection');
+    if (enableCheckbox && configSection) {
+        configSection.style.display = enableCheckbox.checked ? 'grid' : 'none';
+    }
+    
+    // Foco no primeiro campo
+    setTimeout(() => {
+        getElement('siteName')?.focus();
+    }, 300);
+    
+    // Mostrar notificação de restore se houver dados
+    if (hasRestoredData) {
+        showRestoreNotification();
+    }
+});
+
+function showRestoreNotification() {
+    const notification = document.createElement('div');
+    notification.className = 'restore-notification';
+    notification.innerHTML = `
+        <span><i class="fas fa-history"></i> Dados anteriores restaurados com sucesso!</span>
+        <div>
+            <button onclick="this.parentElement.parentElement.remove()">OK</button>
+            <button onclick="clearAllData()">Limpar</button>
+        </div>
+    `;
+    
+    const setupStepper = document.querySelector('.setup-stepper');
+    if (setupStepper) {
+        setupStepper.insertBefore(notification, setupStepper.firstChild);
+    }
+    
+    // Remover automaticamente após 10 segundos
+    setTimeout(() => {
+        if (notification.parentNode) {
+            notification.remove();
+        }
+    }, 10000);
+}
+
+// Debounce helper
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
     </script>
 </body>
 </html>
