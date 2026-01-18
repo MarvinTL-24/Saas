@@ -5,7 +5,7 @@ import os
 
 def ping_app():
     """Faz ping no app para manter ativo"""
-    url = os.environ.get('APP_URL', 'https://seu-projeto.onrender.com')
+    url = os.environ.get('APP_URL', 'https://saas-egzq.onrender.com')
     
     try:
         response = requests.get(f"{url}/api/health", timeout=10)
