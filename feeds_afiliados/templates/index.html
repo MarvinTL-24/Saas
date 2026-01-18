@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feeds RSS - Sistema em Execução</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #10b981;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            color: #1f2937;
+            margin-bottom: 15px;
+            font-size: 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--success);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+        
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+        }
+        
+        .card h2 {
+            color: #1f2937;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f3f4f6;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .stat-item {
+            background: #f9fafb;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+        
+        .feeds-list {
+            display: grid;
+            gap: 15px;
+        }
+        
+        .feed-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            background: #f9fafb;
+            border-radius: 10px;
+            border: 1px solid #e5e7eb;
+            text-decoration: none;
+            color: #1f2937;
+            transition: all 0.3s;
+        }
+        
+        .feed-item:hover {
+            background: #f3f4f6;
+            border-color: var(--primary);
+        }
+        
+        .feed-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .feed-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        
+        .feed-name {
+            font-weight: 600;
+        }
+        
+        .feed-url {
+            font-size: 0.85rem;
+            color: #6b7280;
+        }
+        
+        .btn {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+            color: white;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+        
+        .notification {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            padding: 20px 25px;
+            border-radius: 12px;
+            color: white;
+            font-weight: 600;
+            z-index: 1001;
+            animation: slideIn 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .notification-success {
+            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+        }
+        
+        .notification-error {
+            background: #ef4444;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-rss"></i> Feeds RSS Automáticos</h1>
+            <p>Sistema em execução 24 horas por dia</p>
+            <div class="status-badge">
+                <i class="fas fa-check-circle"></i>
+                SISTEMA ATIVO
+            </div>
+        </div>
+        
+        <div class="dashboard">
+            <div class="card">
+                <h2><i class="fas fa-chart-line"></i> Estatísticas</h2>
+                <div class="stats">
+                    <div class="stat-item">
+                        <div class="stat-value" id="totalFeeds">0</div>
+                        <div class="stat-label">Feeds Ativos</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="totalProducts">0</div>
+                        <div class="stat-label">Produtos</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="updateInterval">{{ config.update_interval_hours }}</div>
+                        <div class="stat-label">Horas</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="sitesCount">{{ config.sites|length }}</div>
+                        <div class="stat-label">Sites</div>
+                    </div>
+                </div>
+                
+                <div style="display: flex; gap: 15px; margin-top: 20px;">
+                    <button class="btn btn-success" onclick="generateAllFeeds()">
+                        <i class="fas fa-sync-alt"></i> Gerar Todos os Feeds Agora
+                    </button>
+                    <button class="btn btn-primary" onclick="window.location.reload()">
+                        <i class="fas fa-redo"></i> Atualizar
+                    </button>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2><i class="fas fa-folder"></i> Feeds Disponíveis</h2>
+                <div class="feeds-list" id="feedsList">
+                    <!-- Feeds serão carregados aqui -->
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2><i class="fas fa-info-circle"></i> Como Usar</h2>
+            <div style="display: grid; gap: 15px; margin-top: 20px;">
+                <div style="display: flex; align-items: center; gap: 15px; padding: 15px; background: #f9fafb; border-radius: 10px;">
+                    <div style="background: var(--primary); color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">1</div>
+                    <div>
+                        <strong>Copie os links RSS</strong>
+                        <p style="color: #6b7280; margin-top: 5px;">Use os links acima no seu site, blog ou aplicativo</p>
+                    </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 15px; padding: 15px; background: #f9fafb; border-radius: 10px;">
+                    <div style="background: var(--primary); color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">2</div>
+                    <div>
+                        <strong>Os feeds atualizam automaticamente</strong>
+                        <p style="color: #6b7280; margin-top: 5px;">A cada {{ config.update_interval_hours }} horas o sistema busca novas ofertas</p>
+                    </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 15px; padding: 15px; background: #f9fafb; border-radius: 10px;">
+                    <div style="background: var(--primary); color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">3</div>
+                    <div>
+                        <strong>Sistema 24/7</strong>
+                        <p style="color: #6b7280; margin-top: 5px;">Funciona continuamente sem necessidade de intervenção</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let stats = {
+            totalFeeds: 0,
+            totalProducts: 0,
+            sitesCount: {{ config.sites|length }},
+            updateInterval: {{ config.update_interval_hours }}
+        };
+        
+        async function loadFeeds() {
+            try {
+                const response = await fetch('/feeds');
+                const result = await response.json();
+                
+                const feedsList = document.getElementById('feedsList');
+                let html = '';
+                
+                if (result.feeds && result.feeds.length > 0) {
+                    stats.totalFeeds = result.feeds.length;
+                    
+                    result.feeds.forEach(feed => {
+                        const site = feed.name.replace('_promocoes.xml', '');
+                        const fullUrl = window.location.origin + feed.url;
+                        
+                        html += `
+                            <a href="${feed.url}" class="feed-item" target="_blank">
+                                <div class="feed-info">
+                                    <div class="feed-icon">
+                                        <i class="fas fa-rss"></i>
+                                    </div>
+                                    <div>
+                                        <div class="feed-name">${feed.name}</div>
+                                        <div class="feed-url">${fullUrl}</div>
+                                        <div style="font-size: 0.8rem; color: #6b7280; margin-top: 2px;">
+                                            ${feed.size} bytes • Atualizado: ${feed.modified}
+                                        </div>
+                                    </div>
+                                </div>
+                                <i class="fas fa-external-link-alt" style="color: #6b7280;"></i>
+                            </a>
+                        `;
+                    });
+                } else {
+                    html = `
+                        <div style="text-align: center; padding: 40px 20px; color: #6b7280;">
+                            <i class="fas fa-inbox" style="font-size: 3rem; margin-bottom: 15px;"></i>
+                            <h3 style="margin-bottom: 10px;">Nenhum feed gerado ainda</h3>
+                            <p>Clique no botão "Gerar Todos os Feeds Agora" para começar</p>
+                        </div>
+                    `;
+                }
+                
+                feedsList.innerHTML = html;
+                updateStats();
+                
+            } catch (error) {
+                console.error('Erro ao carregar feeds:', error);
+            }
+        }
+        
+        async function generateAllFeeds() {
+            showNotification('Gerando todos os feeds...', 'info');
+            
+            try {
+                const response = await fetch('/api/feeds/generate-all', {
+                    method: 'POST'
+                });
+                
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    showNotification('Feeds gerados com sucesso!', 'success');
+                    
+                    // Aguarda 5 segundos e atualiza a lista
+                    setTimeout(() => {
+                        loadFeeds();
+                    }, 5000);
+                    
+                } else {
+                    showNotification('Erro: ' + result.message, 'error');
+                }
+            } catch (error) {
+                showNotification('Erro de conexão', 'error');
+            }
+        }
+        
+        function updateStats() {
+            document.getElementById('totalFeeds').textContent = stats.totalFeeds;
+            document.getElementById('totalProducts').textContent = stats.totalProducts;
+            document.getElementById('updateInterval').textContent = stats.updateInterval;
+            document.getElementById('sitesCount').textContent = stats.sitesCount;
+        }
+        
+        function showNotification(message, type) {
+            const color = type === 'success' ? '#10b981' : 
+                         type === 'error' ? '#ef4444' : 
+                         type === 'info' ? '#3b82f6' : '#10b981';
+            
+            const bgColor = type === 'success' ? 'linear-gradient(135deg, #10b981 0%, #059669 100%)' :
+                           type === 'error' ? 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)' :
+                           type === 'info' ? 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)' :
+                           'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+            
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.style.background = bgColor;
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+                ${message}
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 4000);
+        }
+        
+        // Inicializa
+        document.addEventListener('DOMContentLoaded', () => {
+            loadFeeds();
+            
+            // Atualiza a cada 30 segundos
+            setInterval(loadFeeds, 30000);
+        });
+    </script>
+</body>
+</html>
