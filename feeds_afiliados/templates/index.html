@@ -320,15 +320,15 @@
     </div>
     
     <script>
-        // Variável stats - CORRIGIDA
-        const sitesCount = {{ config.sites|length }};
-        const updateInterval = {{ config.update_interval_hours }};
+        // CORRIGIDO: Usar nomes diferentes para evitar conflito
+        const appSitesCount = {{ config.sites|length }};
+        const appUpdateInterval = {{ config.update_interval_hours }};
         
-        let stats = {
+        let appStats = {
             totalFeeds: 0,
             totalProducts: 0,
-            sitesCount: sitesCount,
-            updateInterval: updateInterval
+            sitesCount: appSitesCount,
+            updateInterval: appUpdateInterval
         };
         
         async function loadFeeds() {
@@ -340,7 +340,7 @@
                 let html = '';
                 
                 if (result.feeds && result.feeds.length > 0) {
-                    stats.totalFeeds = result.feeds.length;
+                    appStats.totalFeeds = result.feeds.length;
                     
                     result.feeds.forEach(feed => {
                         const site = feed.name.replace('_promocoes.xml', '');
@@ -405,10 +405,10 @@
         }
         
         function updateStats() {
-            document.getElementById('totalFeeds').textContent = stats.totalFeeds;
-            document.getElementById('totalProducts').textContent = stats.totalProducts;
-            document.getElementById('updateInterval').textContent = stats.updateInterval;
-            document.getElementById('sitesCount').textContent = stats.sitesCount;
+            document.getElementById('totalFeeds').textContent = appStats.totalFeeds;
+            document.getElementById('totalProducts').textContent = appStats.totalProducts;
+            document.getElementById('updateInterval').textContent = appStats.updateInterval;
+            document.getElementById('sitesCount').textContent = appStats.sitesCount;
         }
         
         function showNotification(message, type) {
