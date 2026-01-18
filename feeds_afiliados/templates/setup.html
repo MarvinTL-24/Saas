@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuração Inicial - Feeds RSS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #10b981;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .setup-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            width: 100%;
+            max-width: 800px;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.15);
+        }
+        
+        .setup-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .setup-header h1 {
+            color: #1f2937;
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .setup-header p {
+            color: #6b7280;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+        
+        .setup-form {
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #374151;
+            font-size: 1.1rem;
+        }
+        
+        .form-group small {
+            display: block;
+            margin-top: 5px;
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+        
+        .site-config {
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #e5e7eb;
+        }
+        
+        .site-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            gap: 15px;
+        }
+        
+        .site-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        
+        .site-name {
+            font-weight: 600;
+            color: #1f2937;
+            font-size: 1.2rem;
+        }
+        
+        .site-url {
+            color: #6b7280;
+            font-size: 0.9rem;
+            margin-top: 2px;
+        }
+        
+        .input-group {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .input-group input {
+            flex: 1;
+            padding: 14px 18px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .input-group .hint {
+            color: #9ca3af;
+            font-size: 0.9rem;
+            font-style: italic;
+            min-width: 120px;
+        }
+        
+        .setup-footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #f3f4f6;
+        }
+        
+        .btn {
+            padding: 16px 40px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(16, 185, 129, 0.3);
+        }
+        
+        .loading {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .notification {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            padding: 20px 25px;
+            border-radius: 12px;
+            color: white;
+            font-weight: 600;
+            z-index: 1001;
+            animation: slideIn 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .notification-success {
+            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+        }
+        
+        .notification-error {
+            background: #ef4444;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+        
+        @media (max-width: 768px) {
+            .setup-container {
+                padding: 25px;
+            }
+            
+            .setup-header h1 {
+                font-size: 2rem;
+            }
+            
+            .input-group {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="setup-container">
+        <div class="setup-header">
+            <h1><i class="fas fa-tools"></i> Configuração Inicial</h1>
+            <p>Para começar a usar o sistema, configure seus códigos de afiliado nos sites abaixo. Você pode deixar em branco os sites que não deseja monitorar.</p>
+        </div>
+        
+        <div class="setup-form">
+            <div class="form-group">
+                <label><i class="fas fa-info-circle"></i> Como funciona:</label>
+                <small>O sistema irá monitorar automaticamente os sites configurados e gerar feeds RSS com SEUS links de afiliado. Configure uma vez e funcione 24h/dia!</small>
+            </div>
+            
+            <form id="setupForm">
+                {% for site_name, site_url in sites.items() %}
+                <div class="site-config">
+                    <div class="site-header">
+                        <div class="site-icon">
+                            {% if site_name == 'amazon' %}
+                            <i class="fab fa-amazon"></i>
+                            {% elif site_name == 'aliexpress' %}
+                            <i class="fas fa-shopping-cart"></i>
+                            {% elif site_name == 'mercadolivre' %}
+                            <i class="fas fa-money-bill-wave"></i>
+                            {% elif site_name == 'shein' %}
+                            <i class="fas fa-tshirt"></i>
+                            {% elif site_name == 'shopee' %}
+                            <i class="fas fa-shopping-bag"></i>
+                            {% elif site_name == 'centauro' %}
+                            <i class="fas fa-running"></i>
+                            {% else %}
+                            <i class="fas fa-store"></i>
+                            {% endif %}
+                        </div>
+                        <div>
+                            <div class="site-name">{{ site_name.upper() }}</div>
+                            <div class="site-url">{{ site_url }}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <input type="text" 
+                               name="{{ site_name }}" 
+                               placeholder="Digite seu código de afiliado..."
+                               autocomplete="off">
+                        <div class="hint">
+                            {% if site_name == 'amazon' %}
+                            Exemplo: sua-tag-20
+                            {% elif site_name == 'mercadolivre' %}
+                            Código afiliado
+                            {% elif site_name == 'aliexpress' %}
+                            aff_fcid
+                            {% else %}
+                            Código de referência
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                
+                <div class="form-group">
+                    <label><i class="fas fa-clock"></i> Intervalo de Atualização:</label>
+                    <div class="input-group">
+                        <input type="number" 
+                               name="update_interval" 
+                               value="6" 
+                               min="1" 
+                               max="24"
+                               placeholder="Horas entre atualizações">
+                        <div class="hint">O sistema atualizará os feeds automaticamente a cada X horas</div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        
+        <div class="setup-footer">
+            <button class="btn btn-primary" onclick="completeSetup()">
+                <i class="fas fa-rocket"></i> CONCLUIR CONFIGURAÇÃO E INICIAR SISTEMA
+            </button>
+            <p style="margin-top: 20px; color: #6b7280; font-size: 0.9rem;">
+                <i class="fas fa-lightbulb"></i> Você poderá alterar essas configurações depois na interface principal
+            </p>
+        </div>
+    </div>
+    
+    <div class="loading" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+        <div>Configurando sistema...</div>
+    </div>
+    
+    <script>
+        function showLoading(message) {
+            const loading = document.getElementById('loadingOverlay');
+            loading.style.display = 'flex';
+        }
+        
+        function hideLoading() {
+            document.getElementById('loadingOverlay').style.display = 'none';
+        }
+        
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.className = 'notification notification-' + type;
+            notification.innerHTML = '<i class="fas fa-' + (type === 'success' ? 'check-circle' : 'exclamation-circle') + '"></i>' + message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 4000);
+        }
+        
+        async function completeSetup() {
+            showLoading('Salvando configurações...');
+            
+            try {
+                const form = document.getElementById('setupForm');
+                const inputs = form.querySelectorAll('input');
+                
+                const affiliate_tags = {};
+                let update_interval = 6;
+                
+                inputs.forEach(input => {
+                    if (input.name === 'update_interval') {
+                        update_interval = parseInt(input.value) || 6;
+                    } else {
+                        const value = input.value.trim();
+                        if (value) {
+                            affiliate_tags[input.name] = value;
+                        }
+                    }
+                });
+                
+                // Verifica se pelo menos um site foi configurado
+                if (Object.keys(affiliate_tags).length === 0) {
+                    showNotification('Configure pelo menos um código de afiliado para continuar', 'error');
+                    hideLoading();
+                    return;
+                }
+                
+                const response = await fetch('/api/setup', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        affiliate_tags: affiliate_tags,
+                        update_interval_hours: update_interval
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    showNotification('Sistema configurado com sucesso!', 'success');
+                    
+                    // Redireciona após 2 segundos
+                    setTimeout(() => {
+                        window.location.href = result.redirect || '/';
+                    }, 2000);
+                    
+                } else {
+                    showNotification(result.message || 'Erro ao configurar sistema', 'error');
+                    hideLoading();
+                }
+                
+            } catch (error) {
+                showNotification('Erro de conexão: ' + error.message, 'error');
+                hideLoading();
+            }
+        }
+        
+        // Auto-focus no primeiro input
+        document.addEventListener('DOMContentLoaded', () => {
+            const firstInput = document.querySelector('input');
+            if (firstInput) {
+                firstInput.focus();
+            }
+        });
+    </script>
+</body>
+</html>
