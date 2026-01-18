@@ -214,6 +214,10 @@
             background: #ef4444;
         }
         
+        .notification-info {
+            background: #3b82f6;
+        }
+        
         @keyframes slideIn {
             from { transform: translateX(100%); opacity: 0; }
             to { transform: translateX(0); opacity: 1; }
@@ -316,11 +320,15 @@
     </div>
     
     <script>
+        // Variável stats - CORRIGIDA
+        const sitesCount = {{ config.sites|length }};
+        const updateInterval = {{ config.update_interval_hours }};
+        
         let stats = {
             totalFeeds: 0,
             totalProducts: 0,
-            sitesCount: {{ config.sites|length }},
-            updateInterval: {{ config.update_interval_hours }}
+            sitesCount: sitesCount,
+            updateInterval: updateInterval
         };
         
         async function loadFeeds() {
@@ -338,32 +346,28 @@
                         const site = feed.name.replace('_promocoes.xml', '');
                         const fullUrl = window.location.origin + feed.url;
                         
-                        html += `
-                            <a href="${feed.url}" class="feed-item" target="_blank">
-                                <div class="feed-info">
-                                    <div class="feed-icon">
-                                        <i class="fas fa-rss"></i>
-                                    </div>
-                                    <div>
-                                        <div class="feed-name">${feed.name}</div>
-                                        <div class="feed-url">${fullUrl}</div>
-                                        <div style="font-size: 0.8rem; color: #6b7280; margin-top: 2px;">
-                                            ${feed.size} bytes • Atualizado: ${feed.modified}
-                                        </div>
-                                    </div>
-                                </div>
-                                <i class="fas fa-external-link-alt" style="color: #6b7280;"></i>
-                            </a>
-                        `;
+                        html += '<a href="' + feed.url + '" class="feed-item" target="_blank">' +
+                               '<div class="feed-info">' +
+                               '<div class="feed-icon">' +
+                               '<i class="fas fa-rss"></i>' +
+                               '</div>' +
+                               '<div>' +
+                               '<div class="feed-name">' + feed.name + '</div>' +
+                               '<div class="feed-url">' + fullUrl + '</div>' +
+                               '<div style="font-size: 0.8rem; color: #6b7280; margin-top: 2px;">' +
+                               feed.size + ' bytes • Atualizado: ' + feed.modified +
+                               '</div>' +
+                               '</div>' +
+                               '</div>' +
+                               '<i class="fas fa-external-link-alt" style="color: #6b7280;"></i>' +
+                               '</a>';
                     });
                 } else {
-                    html = `
-                        <div style="text-align: center; padding: 40px 20px; color: #6b7280;">
-                            <i class="fas fa-inbox" style="font-size: 3rem; margin-bottom: 15px;"></i>
-                            <h3 style="margin-bottom: 10px;">Nenhum feed gerado ainda</h3>
-                            <p>Clique no botão "Gerar Todos os Feeds Agora" para começar</p>
-                        </div>
-                    `;
+                    html = '<div style="text-align: center; padding: 40px 20px; color: #6b7280;">' +
+                           '<i class="fas fa-inbox" style="font-size: 3rem; margin-bottom: 15px;"></i>' +
+                           '<h3 style="margin-bottom: 10px;">Nenhum feed gerado ainda</h3>' +
+                           '<p>Clique no botão "Gerar Todos os Feeds Agora" para começar</p>' +
+                           '</div>';
                 }
                 
                 feedsList.innerHTML = html;
@@ -408,22 +412,24 @@
         }
         
         function showNotification(message, type) {
-            const color = type === 'success' ? '#10b981' : 
-                         type === 'error' ? '#ef4444' : 
-                         type === 'info' ? '#3b82f6' : '#10b981';
+            let bgColor;
+            let icon;
             
-            const bgColor = type === 'success' ? 'linear-gradient(135deg, #10b981 0%, #059669 100%)' :
-                           type === 'error' ? 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)' :
-                           type === 'info' ? 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)' :
-                           'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+            if (type === 'success') {
+                bgColor = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+                icon = 'check-circle';
+            } else if (type === 'error') {
+                bgColor = 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)';
+                icon = 'exclamation-circle';
+            } else {
+                bgColor = 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)';
+                icon = 'info-circle';
+            }
             
             const notification = document.createElement('div');
             notification.className = 'notification';
             notification.style.background = bgColor;
-            notification.innerHTML = `
-                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
-                ${message}
-            `;
+            notification.innerHTML = '<i class="fas fa-' + icon + '"></i>' + message;
             
             document.body.appendChild(notification);
             
