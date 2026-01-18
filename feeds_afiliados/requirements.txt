@@ -1,8 +1,6 @@
-# VERSÃO ALTERNATIVA - Usando html5lib em vez de lxml
 feedgenerator==1.9.2
 beautifulsoup4==4.12.2
 requests==2.31.0
-schedule==1.2.0
 Flask==2.3.3
 html5lib==1.1  # Alternativa ao lxml
 python-dotenv==1.0.0
