@@ -6,744 +6,94 @@
     <title>Configuração - Sistema Automático</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* RESET E BASE */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
+            margin: 0;
             padding: 20px;
             color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
         
-        /* CONTAINER PRINCIPAL */
         .setup-container {
-            max-width: 1000px;
-            margin: 0 auto;
             background: white;
             border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-            overflow: hidden;
-        }
-        
-        /* CABEÇALHO */
-        .setup-container h1 {
-            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
-            color: white;
-            padding: 30px;
-            text-align: center;
-            font-size: 2.2rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-        }
-        
-        /* STEPPER */
-        .setup-stepper {
-            padding: 30px;
-        }
-        
-        .step {
-            display: none;
-            animation: fadeIn 0.5s ease;
-        }
-        
-        .step.active {
-            display: block;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        /* TÍTULOS DAS ETAPAS */
-        .step h2 {
-            color: #4f46e5;
-            margin-bottom: 25px;
-            font-size: 1.8rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #e5e7eb;
-        }
-        
-        /* FORMULÁRIO DE SITES */
-        .site-form {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 25px;
-            background: #f8fafc;
-            padding: 25px;
-            border-radius: 12px;
-            border: 1px solid #e2e8f0;
-        }
-        
-        .site-form input,
-        .site-form select,
-        .site-form textarea {
-            padding: 14px 18px;
-            border: 2px solid #e2e8f0;
-            border-radius: 10px;
-            font-size: 1rem;
-            transition: all 0.3s;
-            background: white;
-        }
-        
-        .site-form input:focus,
-        .site-form select:focus,
-        .site-form textarea:focus {
-            outline: none;
-            border-color: #4f46e5;
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
-        }
-        
-        .site-form button {
-            grid-column: 1 / -1;
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            color: white;
-            border: none;
-            padding: 16px;
-            border-radius: 10px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            transition: all 0.3s;
-        }
-        
-        .site-form button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
-        }
-        
-        /* LISTA DE SITES */
-        #sitesList {
-            margin-top: 20px;
-            display: grid;
-            gap: 10px;
-        }
-        
-        .site-item {
-            background: white;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            padding: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: all 0.3s;
-        }
-        
-        .site-item:hover {
-            border-color: #4f46e5;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        }
-        
-        .site-item strong {
-            color: #1e293b;
-            font-size: 1.1rem;
-        }
-        
-        .site-item small {
-            color: #64748b;
-            font-size: 0.9rem;
-        }
-        
-        .site-item button {
-            background: #ef4444;
-            color: white;
-            border: none;
-            width: 36px;
-            height: 36px;
-            border-radius: 6px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s;
-        }
-        
-        .site-item button:hover {
-            background: #dc2626;
-            transform: scale(1.1);
-        }
-        
-        /* CONFIGURAÇÃO WHATSAPP */
-        .whatsapp-config {
-            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
-            color: white;
-            padding: 30px;
-            border-radius: 15px;
-            margin-bottom: 25px;
-        }
-        
-        .whatsapp-config label {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 25px;
-            font-size: 1.1rem;
-            font-weight: 500;
-        }
-        
-        .whatsapp-config input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-        }
-        
-        .whatsapp-config h3 {
-            margin: 20px 0 15px;
-            font-size: 1.3rem;
-        }
-        
-        .whatsapp-config small {
-            display: block;
-            margin-top: 5px;
-            color: rgba(255,255,255,0.8);
-            font-size: 0.9rem;
-        }
-        
-        /* CAMPOS DE TELEFONE E HORÁRIO */
-        #phoneNumbers,
-        #sendTimes {
-            display: grid;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-        
-        .phone-field,
-        .time-field {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-        
-        .phone-field input,
-        .time-field input {
-            flex: 1;
-            padding: 12px 15px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            background: rgba(255,255,255,0.9);
-        }
-        
-        .phone-field button,
-        .time-field button {
-            background: #ef4444;
-            color: white;
-            border: none;
-            width: 36px;
-            height: 36px;
-            border-radius: 6px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .whatsapp-config button {
-            background: white;
-            color: #25D366;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 10px;
-            transition: all 0.3s;
-        }
-        
-        .whatsapp-config button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-        
-        /* CONFIGURAÇÕES AVANÇADAS */
-        .advanced-settings {
-            background: #f8fafc;
-            padding: 30px;
-            border-radius: 15px;
-            border: 1px solid #e2e8f0;
-        }
-        
-        .setting {
-            margin-bottom: 25px;
-        }
-        
-        .setting label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #1e293b;
-            font-size: 1rem;
-        }
-        
-        .setting input,
-        .setting textarea,
-        .setting select {
+            padding: 40px;
+            max-width: 600px;
             width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: all 0.3s;
-            background: white;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            text-align: center;
         }
         
-        .setting input:focus,
-        .setting textarea:focus {
-            outline: none;
-            border-color: #4f46e5;
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
-        }
-        
-        .setting textarea {
-            resize: vertical;
-            min-height: 120px;
-            font-family: 'Segoe UI', sans-serif;
-        }
-        
-        /* NAVEGAÇÃO */
-        .step-navigation {
+        h1 {
+            color: #4f46e5;
+            margin-bottom: 30px;
             display: flex;
-            justify-content: space-between;
-            margin-top: 40px;
-            padding-top: 25px;
-            border-top: 2px solid #e5e7eb;
-        }
-        
-        .step-navigation button {
-            padding: 14px 28px;
-            border: none;
-            border-radius: 10px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            display: inline-flex;
             align-items: center;
-            gap: 10px;
-            transition: all 0.3s;
+            justify-content: center;
+            gap: 15px;
         }
         
-        .step-navigation button:first-child {
-            background: #64748b;
-            color: white;
-        }
-        
-        .step-navigation button:nth-child(2) {
+        .btn {
             background: #4f46e5;
             color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+            text-decoration: none;
         }
         
-        .step-navigation button:last-child {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            color: white;
-        }
-        
-        .step-navigation button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-        }
-        
-        /* RESPONSIVIDADE */
-        @media (max-width: 768px) {
-            .setup-container {
-                margin: 10px;
-                border-radius: 15px;
-            }
-            
-            .setup-container h1 {
-                font-size: 1.8rem;
-                padding: 20px;
-                flex-direction: column;
-                text-align: center;
-                gap: 10px;
-            }
-            
-            .setup-stepper {
-                padding: 20px;
-            }
-            
-            .site-form {
-                grid-template-columns: 1fr;
-                padding: 20px;
-            }
-            
-            .step h2 {
-                font-size: 1.5rem;
-            }
-            
-            .whatsapp-config,
-            .advanced-settings {
-                padding: 20px;
-            }
-            
-            .step-navigation {
-                flex-direction: column;
-                gap: 15px;
-            }
-            
-            .step-navigation button {
-                width: 100%;
-                justify-content: center;
-            }
-        }
-        
-        /* ESTILOS PARA PLACEHOLDER */
-        ::placeholder {
-            color: #94a3b8;
-        }
-        
-        /* SCROLLBAR PERSONALIZADA */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 4px;
-        }
-        
-        ::-webkit-scrollbar-thumb {
-            background: #c1c1c1;
-            border-radius: 4px;
-        }
-        
-        ::-webkit-scrollbar-thumb:hover {
-            background: #a1a1a1;
-        }
-        
-        /* ANIMAÇÕES */
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-        
-        .pulse {
-            animation: pulse 2s infinite;
+        .btn:hover {
+            background: #7c3aed;
         }
     </style>
 </head>
 <body>
     <div class="setup-container">
-        <h1><i class="fas fa-cogs"></i> Configuração do Sistema</h1>
+        <h1><i class="fas fa-cogs"></i> Configuração Inicial</h1>
+        <p>Bem-vindo ao Sistema Automático de Feeds RSS + WhatsApp!</p>
+        <p>Para começar, complete a configuração inicial:</p>
         
-        <div class="setup-stepper">
-            <!-- Passo 1: Sites -->
-            <div class="step active" id="step1">
-                <h2><i class="fas fa-globe"></i> 1. Adicionar Sites</h2>
-                <div class="site-form">
-                    <input type="text" id="siteName" placeholder="Nome do site (ex: Amazon)">
-                    <input type="url" id="siteUrl" placeholder="URL do site (ex: https://amazon.com.br/promocoes)">
-                    <select id="affiliateType">
-                        <option value="tag">Tag (tag=)</option>
-                        <option value="ref">Referência (ref=)</option>
-                        <option value="affiliate">Affiliate (affiliate=)</option>
-                        <option value="partner">Partner (partner=)</option>
-                        <option value="custom">Customizado</option>
-                    </select>
-                    <input type="text" id="affiliateCode" placeholder="Seu código de afiliado (ex: suasite-20)">
-                    <input type="text" id="siteCategories" placeholder="Categorias (ex: eletrônicos, livros, casa)">
-                    <button onclick="addSite()"><i class="fas fa-plus"></i> Adicionar Site</button>
-                </div>
-                <div id="sitesList"></div>
-            </div>
-            
-            <!-- Passo 2: WhatsApp -->
-            <div class="step" id="step2">
-                <h2><i class="fab fa-whatsapp"></i> 2. Configurar WhatsApp</h2>
-                <div class="whatsapp-config">
-                    <label>
-                        <input type="checkbox" id="enableWhatsApp" checked>
-                        Ativar envio automático para WhatsApp
-                    </label>
-                    
-                    <h3><i class="fas fa-phone"></i> Números para enviar:</h3>
-                    <div id="phoneNumbers"></div>
-                    <button onclick="addPhoneField()"><i class="fas fa-plus"></i> Adicionar Número</button>
-                    
-                    <h3><i class="fas fa-key"></i> Chave API WhatsApp Business:</h3>
-                    <input type="password" id="whatsappApiKey" placeholder="Sua chave API (válida por 24h)">
-                    <small><i class="fas fa-info-circle"></i> Renove a cada 24 horas para continuar funcionando</small>
-                    
-                    <h3><i class="fas fa-clock"></i> Horários de envio:</h3>
-                    <div id="sendTimes"></div>
-                    <button onclick="addTimeField()"><i class="fas fa-plus"></i> Adicionar Horário</button>
-                </div>
-            </div>
-            
-            <!-- Passo 3: Configurações -->
-            <div class="step" id="step3">
-                <h2><i class="fas fa-sliders-h"></i> 3. Configurações Avançadas</h2>
-                <div class="advanced-settings">
-                    <div class="setting">
-                        <label><i class="fas fa-sync-alt"></i> Intervalo entre atualizações (horas):</label>
-                        <input type="number" id="updateInterval" value="4" min="1" max="24">
-                        <small>O sistema buscará novos produtos a cada X horas</small>
-                    </div>
-                    
-                    <div class="setting">
-                        <label><i class="fas fa-box"></i> Produtos por intervalo:</label>
-                        <input type="number" id="productsPerInterval" value="5" min="1" max="20">
-                        <small>Quantos produtos enviar em cada intervalo</small>
-                    </div>
-                    
-                    <div class="setting">
-                        <label><i class="fas fa-chart-line"></i> Limite diário de produtos:</label>
-                        <input type="number" id="dailyLimit" value="20" min="1" max="100">
-                        <small>Máximo de produtos enviados por dia</small>
-                    </div>
-                    
-                    <div class="setting">
-                        <label><i class="fas fa-comment-alt"></i> Template da mensagem:</label>
-                        <textarea id="messageTemplate" rows="6">
-🔥 *OFERTA ESPECIAL* 🔥
-
-*Produto:* {title}
-*Preço:* {price}
-*Categoria:* {category}
-*Site:* {site}
-
-🔗 {link}
-
-📱 Enviado via Sistema Automático</textarea>
-                        <small>Variáveis disponíveis: {title}, {price}, {category}, {site}, {link}</small>
-                    </div>
-                    
-                    <div class="setting">
-                        <label><i class="fas fa-filter"></i> Categorias para filtrar (opcional):</label>
-                        <input type="text" id="categoriesFilter" placeholder="eletrônicos, roupas, casa, livros">
-                        <small>Deixe em branco para enviar todas as categorias</small>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Botões de navegação -->
-            <div class="step-navigation">
-                <button onclick="prevStep()"><i class="fas fa-arrow-left"></i> Anterior</button>
-                <button onclick="nextStep()">Próximo <i class="fas fa-arrow-right"></i></button>
-                <button onclick="completeSetup()" id="finishBtn" style="display:none;">
-                    <i class="fas fa-rocket"></i> Iniciar Sistema
-                </button>
-            </div>
-        </div>
+        <button class="btn" onclick="completeSetup()">
+            <i class="fas fa-rocket"></i> Iniciar Configuração
+        </button>
     </div>
     
     <script>
-        let currentStep = 1;
-        let sites = [];
-        let phoneNumbers = ['+5511999999999'];
-        let sendTimes = ['09:00', '13:00', '17:00', '21:00'];
-        
-        function showStep(step) {
-            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
-            document.getElementById(`step${step}`).classList.add('active');
-            
-            document.getElementById('finishBtn').style.display = 
-                step === 3 ? 'inline-block' : 'none';
-        }
-        
-        function nextStep() {
-            if (currentStep < 3) {
-                currentStep++;
-                showStep(currentStep);
-            }
-        }
-        
-        function prevStep() {
-            if (currentStep > 1) {
-                currentStep--;
-                showStep(currentStep);
-            }
-        }
-        
-        function addSite() {
-            const site = {
-                name: document.getElementById('siteName').value,
-                url: document.getElementById('siteUrl').value,
-                affiliate_type: document.getElementById('affiliateType').value,
-                affiliate_code: document.getElementById('affiliateCode').value,
-                categories: document.getElementById('siteCategories').value.split(',').map(c => c.trim()),
-                enabled: true
-            };
-            
-            if (site.name && site.url) {
-                sites.push(site);
-                updateSitesList();
-                clearSiteForm();
-            }
-        }
-        
-        function updateSitesList() {
-            const list = document.getElementById('sitesList');
-            if (sites.length === 0) {
-                list.innerHTML = '<div style="text-align: center; padding: 20px; color: #64748b; background: #f8fafc; border-radius: 8px;">Nenhum site adicionado ainda</div>';
-                return;
-            }
-            
-            list.innerHTML = sites.map((site, i) => `
-                <div class="site-item">
-                    <div>
-                        <strong>${site.name}</strong><br>
-                        <small>${site.url}</small><br>
-                        <small style="color: #10b981; font-size: 0.85rem;">
-                            <i class="fas fa-tag"></i> ${site.affiliate_code || 'Sem código'}
-                        </small>
-                    </div>
-                    <button onclick="removeSite(${i})" title="Remover site">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </div>
-            `).join('');
-        }
-        
-        function removeSite(index) {
-            if (confirm('Tem certeza que deseja remover este site?')) {
-                sites.splice(index, 1);
-                updateSitesList();
-            }
-        }
-        
-        function clearSiteForm() {
-            document.getElementById('siteName').value = '';
-            document.getElementById('siteUrl').value = '';
-            document.getElementById('affiliateCode').value = '';
-            document.getElementById('siteCategories').value = '';
-            document.getElementById('siteName').focus();
-        }
-        
-        function addPhoneField() {
-            phoneNumbers.push('');
-            updatePhoneFields();
-        }
-        
-        function updatePhoneFields() {
-            const container = document.getElementById('phoneNumbers');
-            container.innerHTML = phoneNumbers.map((num, i) => `
-                <div class="phone-field">
-                    <input type="tel" value="${num}" 
-                           onchange="phoneNumbers[${i}] = this.value"
-                           placeholder="+5511999999999">
-                    ${i > 0 ? `<button onclick="phoneNumbers.splice(${i},1); updatePhoneFields()">X</button>` : ''}
-                </div>
-            `).join('');
-        }
-        
-        function addTimeField() {
-            sendTimes.push('09:00');
-            updateTimeFields();
-        }
-        
-        function updateTimeFields() {
-            const container = document.getElementById('sendTimes');
-            container.innerHTML = sendTimes.map((time, i) => `
-                <div class="time-field">
-                    <input type="time" value="${time}" 
-                           onchange="sendTimes[${i}] = this.value">
-                    ${i > 0 ? `<button onclick="sendTimes.splice(${i},1); updateTimeFields()">X</button>` : ''}
-                </div>
-            `).join('');
-        }
-        
         async function completeSetup() {
-            // Validações
-            if (sites.length === 0) {
-                alert('Adicione pelo menos um site!');
-                showStep(1);
-                return;
-            }
-            
-            if (!document.getElementById('whatsappApiKey').value) {
-                alert('Insira a chave API do WhatsApp Business!');
-                showStep(2);
-                return;
-            }
-            
-            const config = {
-                custom_sites: sites,
-                whatsapp: {
-                    enabled: document.getElementById('enableWhatsApp').checked,
-                    phone_numbers: phoneNumbers.filter(n => n && n.trim() !== ''),
-                    whatsapp_api_key: document.getElementById('whatsappApiKey').value,
-                    send_times: sendTimes,
-                    products_per_interval: parseInt(document.getElementById('productsPerInterval').value),
-                    daily_limit: parseInt(document.getElementById('dailyLimit').value),
-                    message_template: document.getElementById('messageTemplate').value,
-                    categories_filter: document.getElementById('categoriesFilter').value.split(',').map(c => c.trim()).filter(c => c),
-                    min_price: 0,
-                    max_price: 10000
-                },
-                update_settings: {
-                    interval_hours: parseInt(document.getElementById('updateInterval').value),
-                    start_immediately: true,
-                    random_delay_minutes: 5,
-                    products_per_update: 20
-                },
-                setup_completed: true
-            };
-            
-            // Mostra loading
-            const finishBtn = document.getElementById('finishBtn');
-            const originalText = finishBtn.innerHTML;
-            finishBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Configurando...';
-            finishBtn.disabled = true;
-            
             try {
                 const response = await fetch('/api/setup', {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(config)
+                    body: JSON.stringify({
+                        setup_completed: true,
+                        custom_sites: [],
+                        whatsapp: { enabled: false }
+                    })
                 });
                 
                 const result = await response.json();
                 
                 if (result.status === 'success') {
-                    finishBtn.innerHTML = '<i class="fas fa-check"></i> Configurado!';
-                    finishBtn.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
-                    
-                    setTimeout(() => {
-                        window.location.href = '/';
-                    }, 1500);
+                    alert('Configuração completada! Redirecionando...');
+                    window.location.href = '/';
                 } else {
-                    alert('Erro: ' + (result.message || 'Erro desconhecido'));
-                    finishBtn.innerHTML = originalText;
-                    finishBtn.disabled = false;
+                    alert('Erro: ' + result.message);
                 }
             } catch (error) {
                 alert('Erro de conexão: ' + error.message);
-                finishBtn.innerHTML = originalText;
-                finishBtn.disabled = false;
             }
         }
-        
-        // Inicializa
-        document.addEventListener('DOMContentLoaded', () => {
-            updatePhoneFields();
-            updateTimeFields();
-            updateSitesList();
-            showStep(1);
-            
-            // Foco no primeiro campo
-            document.getElementById('siteName').focus();
-        });
     </script>
 </body>
 </html>

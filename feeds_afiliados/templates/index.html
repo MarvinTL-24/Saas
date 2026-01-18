@@ -691,48 +691,45 @@
             }
         }
         
-        async function loadFeeds() {
+        async function loadStats() {
             try {
-                const response = await fetch('/api/feeds');
-                const data = await response.json();
+                const response = await fetch('/api/stats');
+                systemStats = await response.json();
                 
-                const feedsList = document.getElementById('feedsList');
+                // Atualiza UI com fallbacks
+                document.getElementById('totalSites').textContent = 
+                    systemConfig.custom_sites?.length || 0;
                 
-                if (data.feeds && data.feeds.length > 0) {
-                    feedsList.innerHTML = data.feeds.map(feed => `
-                        <a href="${feed.url}" class="feed-card" target="_blank">
-                            <div class="feed-header">
-                                <div class="feed-name">
-                                    <i class="fas fa-rss" style="color: #4f46e5;"></i>
-                                    ${feed.name}
-                                </div>
-                                <div class="feed-size">
-                                    ${Math.round(feed.size / 1024)} KB
-                                </div>
-                            </div>
-                            <div class="feed-url">${window.location.origin}${feed.url}</div>
-                            <div class="feed-actions">
-                                <button class="btn btn-small btn-primary" onclick="copyFeedUrl('${feed.url}')">
-                                    <i class="fas fa-copy"></i> Copiar URL
-                                </button>
-                                <button class="btn btn-small btn-success" onclick="testFeed('${feed.url}')">
-                                    <i class="fas fa-external-link-alt"></i> Testar
-                                </button>
-                            </div>
-                        </a>
-                    `).join('');
+                // Compatibilidade com diferentes nomes de campos
+                document.getElementById('totalProducts').textContent = 
+                    systemStats.total_products_found || 
+                    systemStats.total_products || 
+                    0;
+                
+                document.getElementById('whatsappSent').textContent = 
+                    systemStats.total_products_sent || 
+                    (systemStats.whatsapp_stats?.sent_today || 0);
+                
+                // Próxima atualização
+                if (systemStats.next_update) {
+                    try {
+                        const nextDate = new Date(systemStats.next_update);
+                        document.getElementById('nextUpdate').textContent = 
+                            nextDate.toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
+                    } catch (e) {
+                        document.getElementById('nextUpdate').textContent = '--:--';
+                    }
                 } else {
-                    feedsList.innerHTML = `
-                        <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: #64748b;">
-                            <i class="fas fa-inbox fa-3x" style="margin-bottom: 15px; opacity: 0.5;"></i>
-                            <h3 style="margin-bottom: 10px;">Nenhum feed gerado ainda</h3>
-                            <p>Clique em "Atualizar Agora" para gerar os primeiros feeds</p>
-                        </div>
-                    `;
+                    document.getElementById('nextUpdate').textContent = '--:--';
                 }
                 
             } catch (error) {
-                console.error('Erro ao carregar feeds:', error);
+                console.error('Erro ao carregar estatísticas:', error);
+                // Valores padrão
+                document.getElementById('totalSites').textContent = '0';
+                document.getElementById('totalProducts').textContent = '0';
+                document.getElementById('whatsappSent').textContent = '0';
+                document.getElementById('nextUpdate').textContent = '--:--';
             }
         }
         
