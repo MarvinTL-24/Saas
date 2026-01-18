@@ -440,6 +440,536 @@
         .pulse {
             animation: pulse 2s infinite;
         }
+
+        /* WhatsApp Config Styles */
+.whatsapp-config {
+    background: #f8fafc;
+    border-radius: 15px;
+    padding: 0;
+    border: 1px solid #e2e8f0;
+    overflow: hidden;
+}
+
+/* Toggle Section */
+.toggle-section {
+    background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+    color: white;
+    padding: 25px 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.toggle-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.toggle-container input {
+    display: none;
+}
+
+.toggle-slider {
+    position: relative;
+    width: 60px;
+    height: 30px;
+    background: rgba(255,255,255,0.3);
+    border-radius: 30px;
+    transition: all 0.3s;
+}
+
+.toggle-slider:before {
+    content: '';
+    position: absolute;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: white;
+    top: 2px;
+    left: 2px;
+    transition: all 0.3s;
+}
+
+.toggle-container input:checked + .toggle-slider {
+    background: rgba(255,255,255,0.5);
+}
+
+.toggle-container input:checked + .toggle-slider:before {
+    transform: translateX(30px);
+}
+
+.toggle-label {
+    font-size: 1.2rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.toggle-description {
+    color: rgba(255,255,255,0.9);
+    font-size: 0.95rem;
+    margin-left: 75px;
+}
+
+/* Config Section */
+.config-section {
+    padding: 30px;
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 30px;
+}
+
+/* API Key Section */
+.api-key-section {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.api-input-group {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.api-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.api-header label {
+    font-weight: 600;
+    color: #1e293b;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.api-status {
+    background: #fef3c7;
+    color: #92400e;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.api-input-wrapper {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.api-input-wrapper input {
+    flex: 1;
+    padding: 14px 18px;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-family: 'Courier New', monospace;
+    transition: all 0.3s;
+}
+
+.api-input-wrapper input:focus {
+    outline: none;
+    border-color: #25D366;
+    box-shadow: 0 0 0 3px rgba(37, 211, 102, 0.1);
+}
+
+.api-visibility-btn {
+    background: #f1f5f9;
+    border: 2px solid #e2e8f0;
+    color: #64748b;
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+}
+
+.api-visibility-btn:hover {
+    background: #e2e8f0;
+    color: #334155;
+}
+
+.api-test-btn {
+    background: #3b82f6;
+    color: white;
+    border: none;
+    padding: 0 20px;
+    height: 50px;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s;
+}
+
+.api-test-btn:hover {
+    background: #2563eb;
+    transform: translateY(-2px);
+}
+
+.api-instructions {
+    margin-top: 20px;
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.instructions-content {
+    background: #f0f9ff;
+    border-left: 4px solid #0ea5e9;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.instructions-content h4 {
+    color: #0369a1;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.instructions-content ol {
+    margin-left: 20px;
+    margin-bottom: 15px;
+    color: #475569;
+}
+
+.instructions-content li {
+    margin-bottom: 8px;
+}
+
+.api-warning {
+    background: #fef3c7;
+    border: 1px solid #fbbf24;
+    padding: 12px;
+    border-radius: 8px;
+    color: #92400e;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+}
+
+/* Phone and Time Sections */
+.phone-section,
+.time-section {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    border: 1px solid #e2e8f0;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.section-header h3 {
+    color: #1e293b;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.count-badge {
+    background: #e0f2fe;
+    color: #0369a1;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.phone-grid,
+.time-grid {
+    display: grid;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.phone-field,
+.time-field {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.phone-field input,
+.time-field input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s;
+}
+
+.phone-field input:focus,
+.time-field input:focus {
+    outline: none;
+    border-color: #25D366;
+}
+
+.phone-field button,
+.time-field button {
+    background: #ef4444;
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    flex-shrink: 0;
+}
+
+.phone-field button:hover,
+.time-field button:hover {
+    background: #dc2626;
+    transform: scale(1.05);
+}
+
+.add-btn {
+    background: #10b981;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s;
+    margin-bottom: 10px;
+}
+
+.add-btn:hover {
+    background: #059669;
+    transform: translateY(-2px);
+}
+
+.helper-text {
+    color: #64748b;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.time-presets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.preset-btn {
+    background: #f1f5f9;
+    color: #475569;
+    border: 1px solid #cbd5e1;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.preset-btn:hover {
+    background: #e2e8f0;
+    border-color: #94a3b8;
+}
+
+/* Preview Section */
+.preview-section {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.preview-section h3 {
+    color: #1e293b;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.preview-card {
+    background: #dcf8c6;
+    border-radius: 15px;
+    overflow: hidden;
+    border: 1px solid #a7d4a0;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.preview-header {
+    background: #25D366;
+    color: white;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 600;
+}
+
+.preview-content {
+    padding: 20px;
+    font-size: 0.95rem;
+    color: #1e293b;
+    line-height: 1.5;
+}
+
+.preview-content p {
+    margin-bottom: 8px;
+}
+
+.preview-footer {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(0,0,0,0.1);
+    color: #64748b;
+    font-size: 0.9rem;
+}
+
+.preview-info {
+    background: rgba(255,255,255,0.8);
+    padding: 12px 20px;
+    border-top: 1px solid #a7d4a0;
+    color: #475569;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Stats Card */
+.stats-card {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    border: 1px solid #e2e8f0;
+}
+
+.stats-card h4 {
+    color: #1e293b;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.stat-item {
+    text-align: center;
+    padding: 15px;
+    background: #f8fafc;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+}
+
+.stat-value {
+    display: block;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #25D366;
+    margin-bottom: 5px;
+}
+
+.stat-label {
+    font-size: 0.85rem;
+    color: #64748b;
+}
+
+/* Responsividade */
+@media (max-width: 1024px) {
+    .config-section {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .toggle-section {
+        padding: 20px;
+    }
+    
+    .config-section {
+        padding: 20px;
+        gap: 20px;
+    }
+    
+    .api-input-wrapper {
+        flex-direction: column;
+    }
+    
+    .api-input-wrapper input {
+        width: 100%;
+    }
+    
+    .api-visibility-btn,
+    .api-test-btn {
+        width: 100%;
+        height: 45px;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+}
+        
     </style>
 </head>
 <body>
@@ -453,12 +983,12 @@
                 <div class="site-form">
                     <input type="text" id="siteName" placeholder="Nome do site (ex: Amazon)">
                     <input type="url" id="siteUrl" placeholder="URL do site (ex: https://amazon.com.br/promocoes)">
-                    <select id="affiliateType">
-                        <option value="tag">Tag (tag=)</option>
-                        <option value="ref">Referência (ref=)</option>
-                        <option value="affiliate">Affiliate (affiliate=)</option>
-                        <option value="partner">Partner (partner=)</option>
-                        <option value="custom">Customizado</option>
+                    <select id="affiliateType" onchange="showExample()">
+                        <option value="tag">Tag (tag=) - Ex: Amazon</option>
+                        <option value="ref">Referência (ref=) - Ex: Hotmart</option>
+                        <option value="affiliate">Affiliate (affiliate=) - Ex: Coursera</option>
+                        <option value="partner">Partner (partner=) - Ex: Udemy</option>
+                        <option value="custom">Customizado - Insira o parâmetro completo</option>
                     </select>
                     <input type="text" id="affiliateCode" placeholder="Seu código de afiliado (ex: suasite-20)">
                     <input type="text" id="siteCategories" placeholder="Categorias (ex: eletrônicos, livros, casa)">
@@ -470,23 +1000,166 @@
             <!-- Passo 2: WhatsApp -->
             <div class="step" id="step2">
                 <h2><i class="fab fa-whatsapp"></i> 2. Configurar WhatsApp</h2>
+                
                 <div class="whatsapp-config">
-                    <label>
-                        <input type="checkbox" id="enableWhatsApp" checked>
-                        Ativar envio automático para WhatsApp
-                    </label>
+                    <div class="toggle-section">
+                        <label class="toggle-container">
+                            <input type="checkbox" id="enableWhatsApp" checked>
+                            <span class="toggle-slider"></span>
+                            <span class="toggle-label">
+                                <i class="fas fa-robot"></i>
+                                Ativar envio automático para WhatsApp
+                            </span>
+                        </label>
+                        <p class="toggle-description">
+                            O sistema buscará ofertas e enviará automaticamente para os números configurados
+                        </p>
+                    </div>
                     
-                    <h3><i class="fas fa-phone"></i> Números para enviar:</h3>
-                    <div id="phoneNumbers"></div>
-                    <button onclick="addPhoneField()"><i class="fas fa-plus"></i> Adicionar Número</button>
-                    
-                    <h3><i class="fas fa-key"></i> Chave API WhatsApp Business:</h3>
-                    <input type="password" id="whatsappApiKey" placeholder="Sua chave API (válida por 24h)">
-                    <small><i class="fas fa-info-circle"></i> Renove a cada 24 horas para continuar funcionando</small>
-                    
-                    <h3><i class="fas fa-clock"></i> Horários de envio:</h3>
-                    <div id="sendTimes"></div>
-                    <button onclick="addTimeField()"><i class="fas fa-plus"></i> Adicionar Horário</button>
+                    <div class="config-section" id="whatsappConfigSection">
+                        <!-- API Key Section -->
+                        <div class="api-key-section">
+                            <h3><i class="fas fa-key"></i> Configuração da API</h3>
+                            
+                            <div class="api-input-group">
+                                <div class="api-header">
+                                    <label for="whatsappApiKey">
+                                        <i class="fas fa-shield-alt"></i>
+                                        Chave API WhatsApp Business
+                                    </label>
+                                    <span class="api-status" id="apiStatus">
+                                        <i class="fas fa-clock"></i>
+                                        Válida por 24h
+                                    </span>
+                                </div>
+                                
+                                <div class="api-input-wrapper">
+                                    <input type="password" 
+                                        id="whatsappApiKey" 
+                                        placeholder="Insira sua chave API aqui"
+                                        onfocus="showApiInstructions()"
+                                        onblur="hideApiInstructions()">
+                                    <button type="button" class="api-visibility-btn" onclick="toggleApiVisibility()">
+                                        <i class="fas fa-eye" id="apiEyeIcon"></i>
+                                    </button>
+                                    <button type="button" class="api-test-btn" onclick="testWhatsAppAPI()">
+                                        <i class="fas fa-vial"></i>
+                                        Testar
+                                    </button>
+                                </div>
+                                
+                                <div class="api-instructions" id="apiInstructions" style="display: none;">
+                                    <div class="instructions-content">
+                                        <h4><i class="fas fa-info-circle"></i> Como obter sua chave API:</h4>
+                                        <ol>
+                                            <li>Acesse o <a href="https://developers.facebook.com/" target="_blank">Facebook Developers</a></li>
+                                            <li>Crie um aplicativo WhatsApp Business</li>
+                                            <li>Gere um token de acesso temporário</li>
+                                            <li>Cole a chave acima (válida por 24h)</li>
+                                        </ol>
+                                        <div class="api-warning">
+                                            <i class="fas fa-exclamation-triangle"></i>
+                                            <strong>Importante:</strong> Renove a chave a cada 24h para continuar funcionando
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Números de telefone -->
+                            <div class="phone-section">
+                                <div class="section-header">
+                                    <h3><i class="fas fa-phone-alt"></i> Números de destino</h3>
+                                    <span class="count-badge" id="phoneCount">1 número</span>
+                                </div>
+                                
+                                <div class="phone-grid" id="phoneNumbers">
+                                    <!-- Phone fields serão inseridos aqui -->
+                                </div>
+                                
+                                <button type="button" class="add-btn" onclick="addPhoneField()">
+                                    <i class="fas fa-plus-circle"></i>
+                                    Adicionar número
+                                </button>
+                                
+                                <p class="helper-text">
+                                    <i class="fas fa-lightbulb"></i>
+                                    Adicione números no formato internacional: +5511999999999
+                                </p>
+                            </div>
+                            
+                            <!-- Horários de envio -->
+                            <div class="time-section">
+                                <div class="section-header">
+                                    <h3><i class="fas fa-clock"></i> Horários de envio</h3>
+                                    <span class="count-badge" id="timeCount">4 horários</span>
+                                </div>
+                                
+                                <div class="time-grid" id="sendTimes">
+                                    <!-- Time fields serão inseridos aqui -->
+                                </div>
+                                
+                                <button type="button" class="add-btn" onclick="addTimeField()">
+                                    <i class="fas fa-plus-circle"></i>
+                                    Adicionar horário
+                                </button>
+                                
+                                <div class="time-presets">
+                                    <small>Predefinições:</small>
+                                    <button type="button" class="preset-btn" onclick="setTimePreset('morning')">
+                                        Manhã (9h, 12h)
+                                    </button>
+                                    <button type="button" class="preset-btn" onclick="setTimePreset('afternoon')">
+                                        Tarde (14h, 17h)
+                                    </button>
+                                    <button type="button" class="preset-btn" onclick="setTimePreset('full')">
+                                        Completo (9h, 12h, 15h, 18h, 21h)
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Preview Section -->
+                        <div class="preview-section">
+                            <h3><i class="fas fa-eye"></i> Prévia do envio</h3>
+                            <div class="preview-card">
+                                <div class="preview-header">
+                                    <i class="fab fa-whatsapp"></i>
+                                    <span>Mensagem de exemplo</span>
+                                </div>
+                                <div class="preview-content">
+                                    <p><strong>🔥 OFERTA ESPECIAL 🔥</strong></p>
+                                    <p><strong>Produto:</strong> Smartphone XYZ</p>
+                                    <p><strong>Preço:</strong> R$ 999,90</p>
+                                    <p><strong>Categoria:</strong> Eletrônicos</p>
+                                    <p><strong>Site:</strong> Amazon</p>
+                                    <p>🔗 https://exemplo.com/produto</p>
+                                    <p class="preview-footer">📱 Enviado via Sistema Automático</p>
+                                </div>
+                                <div class="preview-info">
+                                    <i class="fas fa-info-circle"></i>
+                                    Formato baseado no template configurado
+                                </div>
+                            </div>
+                            
+                            <div class="stats-card">
+                                <h4><i class="fas fa-chart-bar"></i> Estatísticas programadas</h4>
+                                <div class="stats-grid">
+                                    <div class="stat-item">
+                                        <span class="stat-value" id="statProducts">5</span>
+                                        <span class="stat-label">Produtos/envio</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-value" id="statDaily">20</span>
+                                        <span class="stat-label">Máx. diário</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-value" id="statIntervals">6</span>
+                                        <span class="stat-label">Envios/dia</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             
@@ -733,6 +1406,154 @@
                 finishBtn.disabled = false;
             }
         }
+        
+        // WhatsApp Config Functions
+        function toggleApiVisibility() {
+            const input = document.getElementById('whatsappApiKey');
+            const eyeIcon = document.getElementById('apiEyeIcon');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                eyeIcon.className = 'fas fa-eye-slash';
+            } else {
+                input.type = 'password';
+                eyeIcon.className = 'fas fa-eye';
+            }
+        }
+
+        function showApiInstructions() {
+            const instructions = document.getElementById('apiInstructions');
+            instructions.style.display = 'block';
+        }
+
+        function hideApiInstructions() {
+            const instructions = document.getElementById('apiInstructions');
+            // Pequeno delay para permitir clicar nos links
+            setTimeout(() => {
+                instructions.style.display = 'none';
+            }, 200);
+        }
+
+        function testWhatsAppAPI() {
+            const apiKey = document.getElementById('whatsappApiKey').value;
+            
+            if (!apiKey) {
+                alert('Por favor, insira a chave API primeiro');
+                return;
+            }
+            
+            const testBtn = document.querySelector('.api-test-btn');
+            const originalText = testBtn.innerHTML;
+            
+            testBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Testando...';
+            testBtn.disabled = true;
+            
+            // Simulação de teste
+            setTimeout(() => {
+                testBtn.innerHTML = '<i class="fas fa-check"></i> API Válida!';
+                testBtn.style.background = '#10b981';
+                
+                setTimeout(() => {
+                    testBtn.innerHTML = originalText;
+                    testBtn.style.background = '';
+                    testBtn.disabled = false;
+                }, 2000);
+            }, 1500);
+        }
+
+        function setTimePreset(type) {
+            const presets = {
+                'morning': ['09:00', '12:00'],
+                'afternoon': ['14:00', '17:00'],
+                'full': ['09:00', '12:00', '15:00', '18:00', '21:00']
+            };
+            
+            sendTimes = [...presets[type]];
+            updateTimeFields();
+            updateStats();
+        }
+
+        function updateStats() {
+            document.getElementById('phoneCount').textContent = 
+                phoneNumbers.filter(n => n.trim()).length + ' número(s)';
+            
+            document.getElementById('timeCount').textContent = 
+                sendTimes.length + ' horário(s)';
+            
+            document.getElementById('statIntervals').textContent = sendTimes.length;
+        }
+
+        // Atualizar as funções existentes
+        function addPhoneField() {
+            phoneNumbers.push('');
+            updatePhoneFields();
+            updateStats();
+        }
+
+        function updatePhoneFields() {
+            const container = document.getElementById('phoneNumbers');
+            container.innerHTML = phoneNumbers.map((num, i) => `
+                <div class="phone-field">
+                    <input type="tel" 
+                        value="${num}" 
+                        placeholder="+5511999999999"
+                        oninput="phoneNumbers[${i}] = this.value; updateStats()">
+                    ${i > 0 ? `
+                        <button onclick="phoneNumbers.splice(${i},1); updatePhoneFields(); updateStats()" 
+                                title="Remover número">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    ` : ''}
+                </div>
+            `).join('');
+        }
+
+        function addTimeField() {
+            sendTimes.push('09:00');
+            updateTimeFields();
+            updateStats();
+        }
+
+        function updateTimeFields() {
+            const container = document.getElementById('sendTimes');
+            container.innerHTML = sendTimes.map((time, i) => `
+                <div class="time-field">
+                    <input type="time" 
+                        value="${time}" 
+                        onchange="sendTimes[${i}] = this.value; updateStats()">
+                    ${i > 0 ? `
+                        <button onclick="sendTimes.splice(${i},1); updateTimeFields(); updateStats()" 
+                                title="Remover horário">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    ` : ''}
+                </div>
+            `).join('');
+        }
+
+        // Atualizar o DOMContentLoaded
+        document.addEventListener('DOMContentLoaded', () => {
+            updatePhoneFields();
+            updateTimeFields();
+            updateSitesList();
+            updateStats();
+            showStep(1);
+            
+            // Toggle WhatsApp config visibility
+            const enableCheckbox = document.getElementById('enableWhatsApp');
+            const configSection = document.getElementById('whatsappConfigSection');
+            
+            function toggleConfigVisibility() {
+                if (enableCheckbox.checked) {
+                    configSection.style.display = 'grid';
+                } else {
+                    configSection.style.display = 'none';
+                }
+            }
+            
+            enableCheckbox.addEventListener('change', toggleConfigVisibility);
+            toggleConfigVisibility(); // Initial call
+        });
         
         // Inicializa
         document.addEventListener('DOMContentLoaded', () => {
